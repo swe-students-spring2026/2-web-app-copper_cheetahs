@@ -4,11 +4,11 @@ A little exercise to build a web application following an agile development proc
 
 ## Product vision statement
 
-See instructions. Delete this line and place the Product Vision Statement here.
+We developed an application that allows developers and stakeholders to easily identify the completion of tasks in a project.
 
 ## User stories
 
-See instructions. Delete this line and place a link to the user stories here.
+See user stories [here](https://github.com/swe-students-spring2026/2-web-app-copper_cheetahs/issues).
 
 ## Steps necessary to run the software
 
@@ -16,4 +16,4 @@ See instructions. Delete this line and place instructions to download, configure
 
 ## Task boards
 
-See instructions. Delete this line and place a link to the task boards here.
+See task board [here](https://github.com/orgs/swe-students-spring2026/projects/26/views/2).
