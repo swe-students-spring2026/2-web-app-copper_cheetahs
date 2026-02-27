@@ -1,0 +1,35 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-size: 1em;
+    font-family: 'Open Sans', sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+
+    height: 100vh;
+    width: 100vw;
+}
+
+/* navbar */
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 1em;
+    height: 10%;
+
+    color: black;
+    text-decoration: none;
+    font-size: 2em;
+
+    background-color: white;
+    border-bottom: 2px solid rgb(209, 208, 208);
+}
+
+nav a:hover {
+    color: gray;
+}
