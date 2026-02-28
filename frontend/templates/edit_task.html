@@ -1,4 +1,9 @@
-{% extends 'base.html' %} {% block container %}
+{% extends 'base.html' %} {% block stylesheets %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/edit_task.css') }}"
+/>
+{% endblock %} {% block container %}
 <h1>Edit Task</h1>
 
 <form method="post" action="#">
