@@ -53,6 +53,49 @@ def create_app():
         """
         return render_template("login.html")
 
+
+    """
+    <form> {
+        input name='title'
+        input name='description'
+        input name='priority'
+        input name='due_date'
+        input name='status'
+        input name='assigned'
+
+        button submit
+    }
+    """
+
+    @app.route("/add-task")
+    def add_task():
+        return render_template("add_task.html")
+    
+    @app.route("/add-task",  methods=["POST"])
+    def add_task_post():
+        print(request.form)
+        tempDoc = {
+            'name': request.form.get('title'),
+            'description': request.form.get('description'),
+            'priority': request.form.get('priority'),
+            'due_date': request.form.get('due_date'),
+            'status': request.form.get('status'),
+            'assigned': request.form.get('assigned'),
+        }
+        
+        taskID = db.taskList.insert_one(tempDoc)
+
+        # test = db.taskList.find({})
+        # print(test)
+        return redirect(url_for("home"))
+    
+    """
+    python backend/app.py
+    """
+
+
+
+
     @app.route("/edit-task")
     def edit_task():
         return render_template("edit_task.html")
@@ -83,3 +126,4 @@ if __name__ == "__main__":
     print(f"FLASK_ENV: {FLASK_ENV}, FLASK_PORT: {FLASK_PORT}")
 
     app.run(port=FLASK_PORT)
+
