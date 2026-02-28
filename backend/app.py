@@ -42,8 +42,16 @@ def create_app():
         Returns:
             rendered template (str): The rendered HTML template.
         """
-        docs = db.messages.find({}).sort("created_at", -1)
-        return render_template("index.html", docs=docs)
+        # docs = db.messages.find({}).sort("created_at", -1)
+        # return render_template("index.html", docs=docs)
+        return render_template("index.html")
+
+    @app.route("/login")
+    def login():
+        """
+        Route for the login page.
+        """
+        return render_template("login.html")
 
     # Edit task, not placeholder
     @app.route("/edit-task/<task_id>")
