@@ -45,13 +45,37 @@ def create_app():
         docs = db.messages.find({}).sort("created_at", -1)
         return render_template("index.html", docs=docs)
 
-    @app.route("/edit-task")
-    def edit_task():
-        return render_template("edit_task.html")
+    # Edit task, not placeholder
+    @app.route("/edit-task/<task_id>")
+    def edit_task(task_id):
+        task = db.task.find_one({"_id": ObjectId(task_id)})
+        if not task:
+            return "Task not found", 404
+        return render_template("edit_task.html", task=task)
 
-    @app.route("/edit-task", methods=["POST"])
-    def edit_task_post():
+    @app.route("/edit-task/<task_id>/edit", methods=["POST"])
+    def edit_task_post(task_id):
+        updated_fields = {
+            "title": request.form.get("title"),
+            "description": request.form.get("description"),
+            "due_date": request.form.get("due_date"),
+            "priority": request.form.get("priority"),
+            "status": request.form.get("status"),
+            "assigned": request.form.get("assigned"),
+        }
+
+        db.task.update_one(
+            {"_id": ObjectId(task_id)},
+            {"$set": updated_fields}
+        )
+
+        return redirect(url_for("edit_task", task_id=task_id))
+    
+    @app.route("/tasks/<task_id>/delete", methods=["POST"])
+    def delete_task(task_id):
+        db.task.delete_one({"_id": ObjectId(task_id)})
         return redirect(url_for("home"))
+    # Edit task end
 
     @app.errorhandler(Exception)
     def handle_error(e):
