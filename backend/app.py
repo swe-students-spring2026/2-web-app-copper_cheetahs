@@ -79,7 +79,7 @@ def create_app():
             'description': request.form.get('description'),
             'priority': request.form.get('priority'),
             'due_date': request.form.get('due_date'),
-            'namstatuse': request.form.get('status'),
+            'status': request.form.get('status'),
             'assigned': request.form.get('assigned'),
         }
         
