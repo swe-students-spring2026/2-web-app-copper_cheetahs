@@ -1,55 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../static/css/edit_task.css">
-    <title>Edit Task</title>
-</head>
-<body>
-    <h1>Edit Task</h1>
+{% extends 'base.html' %} {% block container %}
+<h1>Edit Task</h1>
 
-    <form method="post" action="#">
-        <div>
-        <label for="title">Title</label>
-        <input id="title" name="title" type="text"/>
-        </div>
+<form method="post" action="#">
+  <div>
+    <label for="title">Title</label>
+    <input id="title" name="title" type="text" />
+  </div>
 
-        <div>
-        <label for="description">Description</label>
-        <textarea id="description" name="description"></textarea>
-        </div>
+  <div>
+    <label for="description">Description</label>
+    <textarea id="description" name="description"></textarea>
+  </div>
 
-        <div>
-        <label for="due_date">Due Date</label>
-        <input id="due_date" name="due_date" type="text"/>
-        </div>
+  <div>
+    <label for="due_date">Due Date</label>
+    <input id="due_date" name="due_date" type="text" />
+  </div>
 
-        <div>
-        <label for="priority">Priority</label>
-        <input id="priority" name="priority" type="text"/>
-        </div>
+  <div>
+    <label for="priority">Priority</label>
+    <input id="priority" name="priority" type="text" />
+  </div>
 
-        <div>
-        <label for="status">Status</label>
-        <select id="status" name="status">
-            <option>Todo</option>
-            <option>In Progress</option>
-            <option>Completed</option>
-        </select>
-        </div>
+  <div>
+    <label for="status">Status</label>
+    <select id="status" name="status">
+      <option>Todo</option>
+      <option>In Progress</option>
+      <option>Completed</option>
+    </select>
+  </div>
 
-        <div>
-        <label for="assigned">Assigned</label>
-        <select id="assigned" name="assigned">
-            <option>Developer 1</option>
-            <option>Developer 2</option>
-            <option>Developer 3</option>
-        </select>
-        </div>
+  <div>
+    <label for="assigned">Assigned</label>
+    <select id="assigned" name="assigned">
+      <option>Developer 1</option>
+      <option>Developer 2</option>
+      <option>Developer 3</option>
+    </select>
+  </div>
 
-        <button type="submit">Save changes</button>
-        <button type="button">Delete</button>
-    </form>
-</body>
-</html>
+  <button type="submit">Save changes</button>
+  <button type="button">Delete</button>
+</form>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %} {% block container %}
+<h1>Login</h1>
+<!-- add path to action -->
+<form id="login" action="/" method="GET">
+  <div>
+    <label for="username">Enter Username:</label>
+    <input type="text" class="username" name="username" />
+  </div>
+
+  <div>
+    <label for="password">Enter Password</label>
+    <input type="text" class="password" name="password" />
+  </div>
+
+  <button type="submit" class="submit">Search</button>
+</form>
+{% endblock %}
