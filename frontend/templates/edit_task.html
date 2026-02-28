@@ -1,46 +1,58 @@
-{% extends 'base.html' %} {% block container %}
-<h1>Edit Task</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/edit_task.css') }}">
+    <title>Edit Task</title>
+</head>
+<body>
+    <h1>Edit Task</h1>
 
-<form method="post" action="#">
-  <div>
-    <label for="title">Title</label>
-    <input id="title" name="title" type="text" />
-  </div>
+    <form method="post" action="{{ url_for('edit_task_post', task_id=task._id) }}">
+        <div>
+            <label for="title">Title</label>
+            <input id="title" name="title" type="text" value="{{ task.title }}"/>
+        </div>
 
-  <div>
-    <label for="description">Description</label>
-    <textarea id="description" name="description"></textarea>
-  </div>
+        <div>
+            <label for="description">Description</label>
+            <textarea id="description" name="description">{{ task.description }}</textarea>
+        </div>
 
-  <div>
-    <label for="due_date">Due Date</label>
-    <input id="due_date" name="due_date" type="text" />
-  </div>
+        <div>
+            <label for="due_date">Due Date</label>
+            <input id="due_date" name="due_date" type="text" value="{{ task.due_date }}"/>
+        </div>
 
-  <div>
-    <label for="priority">Priority</label>
-    <input id="priority" name="priority" type="text" />
-  </div>
+        <div>
+            <label for="priority">Priority</label>
+            <input id="priority" name="priority" type="text" value="{{ task.priority }}"/>
+        </div>
 
-  <div>
-    <label for="status">Status</label>
-    <select id="status" name="status">
-      <option>Todo</option>
-      <option>In Progress</option>
-      <option>Completed</option>
-    </select>
-  </div>
+        <div>
+            <label for="status">Status</label>
+            <select id="status" name="status">
+                <option value="Todo" {% if task.status == "Todo" %}selected{% endif %}>Todo</option>
+                <option value="In Progress" {% if task.status == "In Progress" %}selected{% endif %}>In Progress</option>
+                <option value="Completed" {% if task.status == "Completed" %}selected{% endif %}>Completed</option>
+            </select>
+        </div>
 
-  <div>
-    <label for="assigned">Assigned</label>
-    <select id="assigned" name="assigned">
-      <option>Developer 1</option>
-      <option>Developer 2</option>
-      <option>Developer 3</option>
-    </select>
-  </div>
+        <div>
+            <label for="assigned">Assigned</label>
+            <select id="assigned" name="assigned">
+                <option value="Developer 1" {% if task.assigned == "Developer 1" %}selected{% endif %}>Developer 1</option>
+                <option value="Developer 2" {% if task.assigned == "Developer 2" %}selected{% endif %}>Developer 2</option>
+                <option value="Developer 3" {% if task.assigned == "Developer 3" %}selected{% endif %}>Developer 3</option>
+            </select>
+        </div>
 
-  <button type="submit">Save changes</button>
-  <button type="button">Delete</button>
-</form>
-{% endblock %}
+        <button type="submit">Save changes</button>
+    </form>
+
+    <form method="post" action="{{ url_for('delete_task', task_id=task._id) }}">
+        <button type="submit">Delete</button>
+    </form>
+</body>
+</html>
