@@ -1,3 +1,7 @@
+"""
+Taskboard
+I'm putting this here for the sole purpose of fixing linting issues.
+"""
 import os
 import datetime
 from flask import Flask, render_template, request, redirect, url_for
@@ -40,11 +44,11 @@ def create_app():
         """
         docs = db.messages.find({}).sort("created_at", -1)
         return render_template("index.html", docs=docs)
-  
+
     @app.route("/edit-task")
     def edit_task():
         return render_template("edit_task.html")
-    
+
     @app.route("/edit-task", methods=["POST"])
     def edit_task_post():
         return redirect(url_for("home"))
