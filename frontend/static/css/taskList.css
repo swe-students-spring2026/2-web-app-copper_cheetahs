@@ -14,19 +14,48 @@
 .taskContainer .task{
     display: flex;
     flex-direction: column;
-    gap: 0.5em;
 
-    padding: 1em;
+    padding: 0;
 
     height: auto;
     width: 70%;
     
-    box-shadow: 2px 2px rgb(235, 234, 234);;
+    box-shadow: 2px 2px rgb(235, 234, 234);
     background-color: white;
+
+    cursor: pointer
 }
 
-.taskContainer .task p{
+.taskContainer .task summary {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    padding: 1em;
+    list-style: none;
+
+    transition: 0.4s;
+}
+
+.taskContainer .task summary:hover {
+    box-shadow: 2px 2px rgb(202, 202, 202);
+}
+
+.taskContainer details[open] summary {
+    background-color: rgb(209, 208, 208);
+}
+
+.taskContainer .task summary p{
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.taskContainer .task .taskInfo {
+    
+    width:80%;
+    padding: 1em;
+}
+
+.taskContainer .task .taskInfo p{
+    overflow-wrap: break-word;
 }

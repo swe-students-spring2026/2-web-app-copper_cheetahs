@@ -10,10 +10,15 @@
 {% block container %}
 <div class = 'taskContainer'>
     {% for task in taskList %}
-        <a class = 'task'>
-            <p>{{ task.name }}</p>
-            <p>{{ task.description }}</p>
-        </a>
+        <details class = 'task'>
+            <summary>
+                <p>{{ task.name }}</p>
+                <p>{{ task.description }}</p>
+            </summary>
+            <div class = 'taskInfo'>
+                <p>{{ task.description }}</p>
+            </div>
+        </details>
     {% endfor %}
 </div>
 {% endblock %}
