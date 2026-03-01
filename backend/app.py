@@ -35,6 +35,8 @@ def create_app():
     except Exception as e:
         print(" * MongoDB connection error:", e)
 
+
+    
     @app.route("/")
     def home():
         """
@@ -44,7 +46,13 @@ def create_app():
         """
         # docs = db.messages.find({}).sort("created_at", -1)
         # return render_template("index.html", docs=docs)
-        return render_template("index.html")
+
+        #temporary routing task page as home for testing
+        tasks = list(db.devTasks.find({}))
+
+        return render_template("taskList.html", 
+            taskList = tasks
+        )
 
     @app.route("/login")
     def login():
@@ -73,7 +81,6 @@ def create_app():
     
     @app.route("/add-task",  methods=["POST"])
     def add_task_post():
-        print(request.form)
         tempDoc = {
             'name': request.form.get('title'),
             'description': request.form.get('description'),
@@ -83,7 +90,7 @@ def create_app():
             'assigned': request.form.get('assigned'),
         }
         
-        taskID = db.taskList.insert_one(tempDoc)
+        taskID = db.devTasks.insert_one(tempDoc)
 
         # test = db.taskList.find({})
         # print(test)
@@ -93,7 +100,7 @@ def create_app():
     python backend/app.py
     """
 
-
+    
 
 
     @app.route("/edit-task")

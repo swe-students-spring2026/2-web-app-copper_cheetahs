@@ -13,6 +13,10 @@ body {
   gap: 1em;
 }
 
+main {
+  background-color: rgb(244, 243, 243);
+}
+
 /* navbar */
 nav {
   display: flex;

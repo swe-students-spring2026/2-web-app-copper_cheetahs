@@ -1,0 +1,33 @@
+{% extends 'base.html' %} 
+
+{% block stylesheets %} 
+<link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/taskList.css') }}"
+    />
+{% endblock %}
+
+{% block container %}
+<div class = 'taskContainer'>
+    {% for task in taskList %}
+        <details class = 'task'>
+            <summary>
+                <p>{{ task.name }}</p>
+                <p>{{ task.description }}</p>
+            </summary>
+            <div class = 'taskInfo'>
+                <div class = 'icons'>
+                    <a href=""><i class="fa-regular fa-pen-to-square edit"></i></a>
+                    <a href=""><i class="fa-solid fa-trash delete"></i></a>
+                </div>
+                <p>{{ task.description }}</p>
+            </div>
+        </details>
+    {% endfor %}
+</div>
+{% endblock %}
+
+
+<!-- 
+python backend/app.py 
+ -->

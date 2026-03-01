@@ -1,0 +1,83 @@
+.taskContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin-top: 1em;
+    padding: 1em;
+    gap: 2em;
+
+    font-size: 1em;
+    font-family: "Open Sans", sans-serif;
+}
+
+.taskContainer .task{
+    display: flex;
+    flex-direction: column;
+
+    padding: 0;
+
+    height: auto;
+    width: 80%;
+    
+    box-shadow: 2px 2px rgb(235, 234, 234);
+    background-color: white;
+
+    cursor: pointer
+}
+
+.taskContainer .task summary {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    padding: 1em;
+    list-style: none;
+
+    transition: 0.4s;
+}
+
+.taskContainer .task summary:hover {
+    box-shadow: 2px 2px rgb(202, 202, 202);
+}
+
+.taskContainer details[open] summary {
+    background-color: rgb(209, 208, 208);
+}
+
+.taskContainer .task summary p{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.taskContainer .task .taskInfo {
+    display: block;
+    padding: 1em;
+    overflow: auto;
+    max-width: 100%;
+}
+
+.taskContainer .task .taskInfo .icons{
+    display: flex;
+    flex-direction: column;
+    gap:0.5em;
+
+    float: right;
+    padding-left: auto;
+
+}
+
+.icons .edit {
+    font-size: 1.2em;
+    color: rgb(211, 155, 24);
+}
+
+.icons .delete {
+    font-size: 1.2em;
+    color: rgb(206, 109, 109);
+}
+
+.taskContainer .task .taskInfo p{
+    overflow-wrap: break-word;
+}
+
