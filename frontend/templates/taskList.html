@@ -1,32 +1,69 @@
-{% extends 'base.html' %} 
-
-{% block stylesheets %} 
+{% extends 'base.html' %} {% block stylesheets %}
 <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/taskList.css') }}"
-    />
-{% endblock %}
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/taskList.css') }}"
+/>
+{% endblock %} {% block container %}
+<form method="GET" action="{{ url_for('dev_tasks') }}">
+  <header class="tab">
+    <div class="tab_spacing"><button type="submit" name="status" value="Todo" class="tab_header {% if current_status == 'Todo' %}active{% endif %}">Todo</button></div>
+    <div class="tab_spacing"><button type="submit" name="status" value="In Progress" class="tab_header {% if current_status == 'In Progress' %}active{% endif %}">In Progress</button></div>
+    <div class="tab_spacing"><button type="submit" name="status" value="Completed" class="tab_header {% if current_status == 'Completed' %}active{% endif %}">Completed</button></div>
+  </header>
+  <label>Priority:</label>
+  <select name="priority">
+    <option value="">All</option>
+    <option value="Low" {% if current_filters.get('priority') == 'Low' %}selected{% endif %}>Low</option>
+    <option value="Medium" {% if current_filters.get('priority') == 'Medium' %}selected{% endif %}>Medium</option>
+    <option value="High" {% if current_filters.get('priority') == 'High' %}selected{% endif %}>High</option>
+  </select>
 
-{% block container %}
-<div class = 'taskContainer'>
-    {% for task in taskList %}
-        <details class = 'task'>
-            <summary>
-                <p>{{ task.name }}</p>
-                <p>{{ task.description }}</p>
-            </summary>
-            <div class = 'taskInfo'>
-                <div class = 'icons'>
-                    <a href=""><i class="fa-regular fa-pen-to-square edit"></i></a>
-                    <a href=""><i class="fa-solid fa-trash delete"></i></a>
-                </div>
-                <p>{{ task.description }}</p>
-            </div>
-        </details>
-    {% endfor %}
+  <label>Assigned:</label>
+    <select name="assigned">
+        <option value="">All</option>
+        {% for user in assigned_users %}
+            <option value="{{ user }}"
+                {% if current_filters.get('assigned') == user %}selected{% endif %}>
+                {{ user }}
+            </option>
+        {% endfor %}
+    </select>
+
+  <label>Due After:</label>
+  <input type="date" name="due_after" value="{{ current_filters.get('due_after', '') }}" />
+
+  <label>Due Before:</label>
+  <input type="date" name="due_before" value="{{ current_filters.get('due_before', '') }}" />
+
+  <button type="submit">Filter</button>
+  <a href="{{ url_for('dev_tasks', status=current_status) }}">Clear</a>
+</form>
+
+<div class="taskContainer">
+  {% for task in taskList %}
+  <details class="task">
+    <summary>
+      <p>{{ task.name }}</p>
+      <p>{{ task.description }}</p>
+    </summary>
+    <div class="taskInfo">
+      <div class="icons">
+        <a href=""><i class="fa-regular fa-pen-to-square edit"></i></a>
+        <a href=""><i class="fa-solid fa-trash delete"></i></a>
+      </div>
+      {% if task.due_date %}
+        {% if task.due_date.__class__.__name__ == 'datetime' %}
+          <p><strong>Due:</strong> {{ task.due_date.strftime('%Y-%m-%d') }}</p>
+        {% else %}
+          <p><strong>Due:</strong> {{ task.due_date }}</p>
+        {% endif %}
+      {% endif %}
+      <p>{{ task.description }}</p>
+    </div>
+  </details>
+  {% endfor %}
 </div>
 {% endblock %}
-
 
 <!-- 
 python backend/app.py 

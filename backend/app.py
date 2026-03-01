@@ -45,7 +45,7 @@ def create_app():
             rendered template (str): The rendered HTML template.
         """
 
-        return redirect("/dev/tasks")
+        return redirect(url_for("dev_tasks"))
     
     @app.route("/dev/tasks")
     def dev_tasks():
@@ -56,10 +56,43 @@ def create_app():
         # return render_template("index.html", docs=docs)
 
         #temporary routing task page as home for testing
-        tasks = list(db.devTasks.find({}))
+        
+        filters = {}
 
-        return render_template("taskList.html",
-            taskList = tasks
+        status = request.args.get("status") or "Todo"
+        priority = request.args.get("priority")
+        assigned = request.args.get("assigned")
+        due_before = request.args.get("due_before")
+        due_after = request.args.get("due_after")
+
+        if status:
+            filters["status"] = status
+
+        if priority:
+            filters["priority"] = priority
+
+        if assigned:
+            filters["assigned"] = assigned
+
+        if due_before or due_after:
+            filters["due_date"] = {}
+            
+            if due_before:
+                filters["due_date"]["$lte"] = datetime.datetime.strptime(due_before, "%Y-%m-%d")
+
+            if due_after:
+                filters["due_date"]["$gte"] = datetime.datetime.strptime(due_after, "%Y-%m-%d")
+
+        tasks = list(db.devTasks.find(filters).sort("due_date", 1))
+
+        all_assigned = db.devTasks.distinct("assigned")
+
+        return render_template(
+            "taskList.html",
+            taskList = tasks,
+            assigned_users=sorted(all_assigned),
+            current_filters = request.args,
+            current_status = status
         )
 
     @app.route("/login")
