@@ -100,15 +100,41 @@ def create_app():
     python backend/app.py
     """
 
+    @app.route("/edit-task/<task_id>")
+    def edit_task(task_id):
+        task = db.devTasks.find_one({"_id": ObjectId(task_id)})
+        if not task:
+            return "Task not found", 404
+        return render_template("edit_task.html", task=task)
     
+    @app.route("/edit-task/<task_id>/edit", methods=["POST"])
+    def edit_task_post(task_id):
+        updated_fields = {
+            "name": request.form.get("title"),
+            "description": request.form.get("description"),
+            "priority": request.form.get("priority"),
+            "due_date": request.form.get("due_date"),
+            "status": request.form.get("status"),
+            "assigned": request.form.get("assigned"),
+        }
 
+        db.devTasks.update_one(
+            {"_id": ObjectId(task_id)},
+            {"$set": updated_fields}
+        )
 
-    @app.route("/edit-task")
-    def edit_task():
-        return render_template("edit_task.html")
+        return redirect(url_for("edit_task", task_id=task_id))
 
-    @app.route("/edit-task", methods=["POST"])
-    def edit_task_post():
+    @app.route("/tasks/<task_id>/delete", methods=["GET"])
+    def delete_task_confirm(task_id):
+        task = db.devTasks.find_one({"_id": ObjectId(task_id)})
+        if not task:
+            return "Task not found", 404
+        return render_template("delete_task_confirm.html", task=task)
+    
+    @app.route("/tasks/<task_id>/delete", methods=["POST"])
+    def delete_task(task_id):
+        db.devTasks.delete_one({"_id": ObjectId(task_id)})
         return redirect(url_for("home"))
 
     @app.errorhandler(Exception)
