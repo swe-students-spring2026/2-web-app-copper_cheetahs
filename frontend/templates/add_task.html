@@ -9,7 +9,7 @@
 <form method="POST" action="#">
   <div>
     <label for="title">Title</label>
-    <input id="title" name="title" type="text" />
+    <input id="title" name="title" type="text" required />
   </div>
 
   <div>
@@ -19,7 +19,7 @@
 
   <div>
     <label for="due_date">Due Date</label>
-    <input id="due_date" name="due_date" type="text" />
+    <input id="due_date" name="due_date" type="date" required />
   </div>
 
   <div>
@@ -29,7 +29,7 @@
 
   <div>
     <label for="status">Status</label>
-    <select id="status" name="status">
+    <select id="status" name="status" required>
       <option>Todo</option>
       <option>In Progress</option>
       <option>Completed</option>
@@ -38,7 +38,7 @@
 
   <div>
     <label for="assigned">Assigned</label>
-    <select id="assigned" name="assigned">
+    <select id="assigned" name="assigned" multiple>
       <option>Developer 1</option>
       <option>Developer 2</option>
       <option>Developer 3</option>
