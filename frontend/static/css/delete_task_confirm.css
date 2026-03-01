@@ -1,0 +1,41 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  .confirm-box {
+    max-width: 700px;
+    margin: 16px auto;
+    padding: 16px;
+  }
+  
+  .confirm-box h1 {
+    margin: 0 0 16px;
+    text-align: center;
+  }
+  
+  .confirm-box p {
+    margin: 0 0 12px;
+  }
+  
+  .confirm-box form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .confirm-box button,
+  .confirm-box .cancel-btn {
+    width: 100%;
+    font: inherit;
+    padding: 10px;
+  }
+  
+  .confirm-box .cancel-btn {
+    display: block;
+    margin-top: 4px;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    border: 1px solid #9a9a9a;
+    background: #efefef;
+  }

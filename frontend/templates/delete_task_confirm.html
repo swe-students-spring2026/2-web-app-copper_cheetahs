@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/delete_task_confirm.css') }}" />
+{% endblock %}
+
+{% block container %}
+<div class="confirm-box">
+  <h1>Delete Task</h1>
+  <p>Delete "{{ task.name }}"?</p>
+
+  <form method="post" action="{{ url_for('delete_task', task_id=task._id) }}">
+    <button type="submit">Confirm Delete</button>
+  </form>
+
+  <a class="cancel-btn" href="{{ url_for('home') }}">Cancel</a>
+</div>
+{% endblock %}

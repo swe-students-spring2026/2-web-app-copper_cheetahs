@@ -123,7 +123,7 @@ def create_app():
             {"$set": updated_fields}
         )
 
-        return redirect(url_for("edit_task", task_id=task_id))
+        return redirect(url_for("home"))
 
     @app.route("/tasks/<task_id>/delete", methods=["GET"])
     def delete_task_confirm(task_id):
