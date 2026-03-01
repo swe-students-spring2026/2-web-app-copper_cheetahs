@@ -60,12 +60,24 @@
 .taskContainer .task .taskInfo .icons{
     display: flex;
     flex-direction: column;
+    gap:0.5em;
 
     float: right;
     padding-left: auto;
 
 }
 
+.icons .edit {
+    font-size: 1.2em;
+    color: rgb(211, 155, 24);
+}
+
+.icons .delete {
+    font-size: 1.2em;
+    color: rgb(206, 109, 109);
+}
+
 .taskContainer .task .taskInfo p{
     overflow-wrap: break-word;
 }
+
