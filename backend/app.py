@@ -44,13 +44,21 @@ def create_app():
         Returns:
             rendered template (str): The rendered HTML template.
         """
+
+        return redirect("/dev/tasks")
+    
+    @app.route("/dev/tasks")
+    def dev_tasks():
+        """
+        Route for the dev tasks
+        """
         # docs = db.messages.find({}).sort("created_at", -1)
         # return render_template("index.html", docs=docs)
 
         #temporary routing task page as home for testing
         tasks = list(db.devTasks.find({}))
 
-        return render_template("taskList.html", 
+        return render_template("taskList.html",
             taskList = tasks
         )
 
