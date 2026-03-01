@@ -1,0 +1,24 @@
+{% extends 'base.html' %} 
+
+{% block stylesheets %} 
+<link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/taskList.css') }}"
+    />
+{% endblock %}
+
+{% block container %}
+<div class = 'taskContainer'>
+    {% for task in taskList %}
+        <a class = 'task'>
+            <p>{{ task.name }}</p>
+            <p>{{ task.description }}</p>
+        </a>
+    {% endfor %}
+</div>
+{% endblock %}
+
+
+<!-- 
+python backend/app.py 
+ -->
