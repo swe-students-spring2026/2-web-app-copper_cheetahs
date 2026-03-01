@@ -10,6 +10,9 @@
     <div class="tab_spacing"><button type="submit" name="status" value="In Progress" class="tab_header {% if current_status == 'In Progress' %}active{% endif %}">In Progress</button></div>
     <div class="tab_spacing"><button type="submit" name="status" value="Completed" class="tab_header {% if current_status == 'Completed' %}active{% endif %}">Completed</button></div>
   </header>
+
+  <input type="hidden" name="status" value="{{ current_status }}">
+
   <label>Priority:</label>
   <select name="priority">
     <option value="">All</option>
@@ -20,13 +23,13 @@
 
   <label>Assigned:</label>
     <select name="assigned">
-        <option value="">All</option>
-        {% for user in assigned_users %}
-            <option value="{{ user }}"
-                {% if current_filters.get('assigned') == user %}selected{% endif %}>
-                {{ user }}
-            </option>
-        {% endfor %}
+      <option value="">All</option>
+      {% for user in assigned_users %}
+        <option value="{{ user }}"
+          {% if current_filters.get('assigned') == user %}selected{% endif %}>
+          {{ user }}
+        </option>
+      {% endfor %}
     </select>
 
   <label>Due After:</label>
