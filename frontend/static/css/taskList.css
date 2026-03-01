@@ -9,6 +9,8 @@
 
     font-size: 1em;
     font-family: "Open Sans", sans-serif;
+
+    
 }
 
 .taskContainer .task{
@@ -81,3 +83,44 @@
     overflow-wrap: break-word;
 }
 
+.popup_overlay {
+    display: flex;
+    visibility: hidden;
+    position: fixed; 
+    bottom: 0.1em;
+    left: 0;
+    right: 0;
+    margin-inline: auto;
+
+    background-color: lightgrey;
+    padding: 1em;
+
+    /*just to make sure the scroll works*/
+    pointer-events: none;
+    touch-action: none;
+}
+
+.popup_overlay:target {
+    display: flex;
+    visibility: visible;
+    flex-direction: column;
+    margin: 1em;
+    gap: 0.5em;
+    align-items: flex-start; 
+    justify-content: center;
+    pointer-events: auto;
+    touch-action: auto;
+}
+
+.filter_row{
+    display: flex;
+    gap: 1em;
+    width: 100%;
+}
+
+.filter_group{
+
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}

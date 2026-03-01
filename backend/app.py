@@ -83,7 +83,16 @@ def create_app():
             if due_after:
                 filters["due_date"]["$gte"] = datetime.datetime.strptime(due_after, "%Y-%m-%d")
 
-        tasks = list(db.devTasks.find(filters).sort("due_date", 1))
+        sort_by = request.args.get("sort_by") or "due_date"
+        order =int(request.args.get("order") or 1)
+
+        # This handles the sorting for priotity as it would else do it alphabetically instead
+        if sort_by == "priority":
+            tasks = list(db.devTasks.find(filters))
+            priority_map = {"High": 1, "Medium": 2, "Low": 3}
+            tasks.sort(key=lambda x: priority_map.get(x.get('priority'), 100), reverse=(order == -1))
+        else:
+            tasks = list(db.devTasks.find(filters).sort(sort_by, order))
 
         all_assigned = db.devTasks.distinct("assigned")
 

@@ -13,33 +13,81 @@
 
   <input type="hidden" name="status" value="{{ current_status }}">
 
-  <label>Priority:</label>
-  <select name="priority">
-    <option value="">All</option>
-    <option value="Low" {% if current_filters.get('priority') == 'Low' %}selected{% endif %}>Low</option>
-    <option value="Medium" {% if current_filters.get('priority') == 'Medium' %}selected{% endif %}>Medium</option>
-    <option value="High" {% if current_filters.get('priority') == 'High' %}selected{% endif %}>High</option>
-  </select>
+  <div id="filtering-popup" class="popup_overlay">
 
-  <label>Assigned:</label>
-    <select name="assigned">
-      <option value="">All</option>
-      {% for user in assigned_users %}
-        <option value="{{ user }}"
-          {% if current_filters.get('assigned') == user %}selected{% endif %}>
-          {{ user }}
-        </option>
-      {% endfor %}
-    </select>
+    <a href="#"><i class="fa-solid fa-x" style="color: black;"></i></a>
+    <h1>Filter Settings</h1>
 
-  <label>Due After:</label>
-  <input type="date" name="due_after" value="{{ current_filters.get('due_after', '') }}" />
+    <div class="filter_row">
 
-  <label>Due Before:</label>
-  <input type="date" name="due_before" value="{{ current_filters.get('due_before', '') }}" />
+      <div class="filter_group">
+        <label>Sort By:</label>
+        <select name="sort_by">
+          <option value="due_date" {% if current_filters.get('sort_by') == 'due_date' %}selected{% endif%}>Due Date</option>
+          <option value="priority" {% if current_filters.get('sort_by') == 'priority' %}selected{% endif%}>Priority</option>
+          <option value="name" {% if current_filters.get('sort_by') == 'name' %}selected{% endif%}>Name</option>
+        </select>
+      </div>
 
-  <button type="submit">Filter</button>
-  <a href="{{ url_for('dev_tasks', status=current_status) }}">Clear</a>
+      <div class="filter_group">
+        <label>Order:</label>
+        <select name="order">
+          <option value="1" {% if current_filters.get('order') == '1' %}selected{% endif %}>Ascending</option>
+          <option value="-1" {% if current_filters.get('order') == '-1' %}selected{% endif %}>Descending</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="filter_row">
+
+      <div class="filter_group">
+        <label>Priority:</label>
+        <select name="priority">
+          <option value="">All</option>
+          <option value="Low" {% if current_filters.get('priority') == 'Low' %}selected{% endif %}>Low</option>
+          <option value="Medium" {% if current_filters.get('priority') == 'Medium' %}selected{% endif %}>Medium</option>
+          <option value="High" {% if current_filters.get('priority') == 'High' %}selected{% endif %}>High</option>
+        </select>
+      </div>
+
+      <div class="filter_group">
+        <label>Assigned:</label>
+        <select name="assigned">
+          <option value="">All</option>
+          {% for user in assigned_users %}
+            <option value="{{ user }}"
+              {% if current_filters.get('assigned') == user %}selected{% endif %}>
+              {{ user }}
+            </option>
+          {% endfor %}
+        </select>
+
+      </div>
+      
+    </div>
+
+    <div class="filter_row">
+
+      <div class="filter_group">
+        <label>Due After:</label>
+        <input type="date" name="due_after" value="{{ current_filters.get('due_after', '') }}" />
+      </div>
+
+      <div class="filter_group">
+        <label>Due Before:</label>
+        <input type="date" name="due_before" value="{{ current_filters.get('due_before', '') }}" />
+      </div>
+
+    </div>
+
+    <div class="filter_row">
+      <button type="submit" formaction="{{ url_for('dev_tasks') }}#filtering-popup" style="padding-inline: 1em;">Filter</button>
+      <a href="{{ url_for('dev_tasks', status=current_status) }}#filtering-popup">Clear</a>
+    </div>
+
+  </div>
+  
 </form>
 
 <div class="taskContainer">
