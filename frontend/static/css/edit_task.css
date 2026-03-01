@@ -2,46 +2,46 @@
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
+.edit-box {
+  width: 100%;
+  margin: 16px 0;
   padding: 16px;
-  font-family: Arial, sans-serif;
 }
 
-h1 {
+.edit-box h1 {
   margin: 0 0 16px;
   text-align: center;
 }
 
-form {
+.edit-box form {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-form > div {
+.edit-box form > div {
   display: flex;
   flex-direction: column;
 }
 
-label {
+.edit-box label {
   margin-bottom: 4px;
 }
 
-input,
-textarea,
-select,
-button {
+.edit-box input,
+.edit-box textarea,
+.edit-box select,
+.edit-box button {
   width: 100%;
   font: inherit;
   padding: 10px;
 }
 
-textarea {
+.edit-box textarea {
   min-height: 90px;
   resize: vertical;
 }
 
-button {
+.edit-box button {
   margin-top: 4px;
 }
