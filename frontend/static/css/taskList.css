@@ -20,7 +20,9 @@
 
     height: auto;
     width: 70%;
-    background-color: gray;
+    
+    box-shadow: 2px 2px rgb(235, 234, 234);;
+    background-color: white;
 }
 
 .taskContainer .task p{
