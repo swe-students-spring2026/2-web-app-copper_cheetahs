@@ -51,18 +51,19 @@
 }
 
 .taskContainer .task .taskInfo {
-    display:inline-block;
-
+    display: block;
     padding: 1em;
-    max-width:100%;
+    overflow: auto;
+    max-width: 100%;
 }
 
 .taskContainer .task .taskInfo .icons{
-    display:flex;
+    display: flex;
     flex-direction: column;
 
-    margin: 2px 1.7em 0px 0.5em;
     float: right;
+    padding-left: auto;
+
 }
 
 .taskContainer .task .taskInfo p{
