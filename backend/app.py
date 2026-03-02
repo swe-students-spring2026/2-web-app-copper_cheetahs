@@ -39,42 +39,33 @@ def create_app():
     
     @app.route("/")
     def home():
-        """
-        Route for the home page.
-        Returns:
-            rendered template (str): The rendered HTML template.
-        """
-        # docs = db.messages.find({}).sort("created_at", -1)
-        # return render_template("index.html", docs=docs)
-
         #temporary routing task page as home for testing
         tasks = list(db.devTasks.find({}))
+        status = 'todo'
+        return render_template("taskList.html", 
+            taskList = tasks,
+            status = status
+        )
+    
+    @app.route("/", methods=["POST"])
+    def home_tab():
+        tasks = list(db.devTasks.find({}))
+        status = request.form.get('status')
+        print(status)
 
         return render_template("taskList.html", 
-            taskList = tasks
+            taskList = tasks,
+            status = status
         )
+    
 
     @app.route("/login")
     def login():
-        """
-        Route for the login page.
-        """
+        # Route for the login page.
         return render_template("login.html")
 
 
-    """
-    <form> {
-        input name='title'
-        input name='description'
-        input name='priority'
-        input name='due_date'
-        input name='status'
-        input name='assigned'
-
-        button submit
-    }
-    """
-
+    # add-task
     @app.route("/add-task")
     def add_task():
         return render_template("add_task.html")
@@ -96,10 +87,8 @@ def create_app():
         # print(test)
         return redirect(url_for("home"))
     
-    """
-    python backend/app.py
-    """
 
+    # edit-task
     @app.route("/edit-task/<task_id>")
     def edit_task(task_id):
         task = db.devTasks.find_one({"_id": ObjectId(task_id)})
@@ -125,6 +114,7 @@ def create_app():
 
         return redirect(url_for("home"))
 
+    # delete-task
     @app.route("/tasks/<task_id>/delete", methods=["GET"])
     def delete_task_confirm(task_id):
         task = db.devTasks.find_one({"_id": ObjectId(task_id)})
@@ -137,6 +127,8 @@ def create_app():
         db.devTasks.delete_one({"_id": ObjectId(task_id)})
         return redirect(url_for("home"))
 
+
+    # error
     @app.errorhandler(Exception)
     def handle_error(e):
         """

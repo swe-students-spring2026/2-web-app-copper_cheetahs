@@ -24,19 +24,31 @@
     />
   </head>
   <body>
+
+
     <nav>
       <a><i class="fa-solid fa-bars"></i></a>
       <a href="{{ url_for('home')}}">Taskboard</a>
       <!-- placeholder for project name -->
       <a><i class="fa-solid fa-filter"></i></a>
     </nav>
-    <header class="tab">
-      <div class="tab_spacing"><a class="tab_header">Todo</a></div>
-      <div class="tab_spacing"><a class="tab_header">In Progress</a></div>
-      <div class="tab_spacing"><a class="tab_header">Completed</a></div>
-    </header>
 
-      
+    <!-- change where action goes in future -->
+    <form class="tab" method="POST" action="">
+      <button class="tab_spacing {% if status == 'todo' %} active {% endif %}" 
+              type="submit" name="status" value="todo">Todo</button>
+
+      <button class="tab_spacing {% if status == 'in-progress' %} active {% endif %}"
+              type="submit" name="status" value="in-progress">In Progress</button>
+              
+      <button class="tab_spacing {% if status == 'completed' %} active {% endif %}"
+              type="submit" name="status" value="completed">Completed</button>
+    </form>
+
     <main>{% block container %} {% endblock %}</main>
   </body>
 </html>
+
+<!--
+python backend/app.py
+-->
