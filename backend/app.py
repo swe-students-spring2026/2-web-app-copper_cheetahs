@@ -59,11 +59,17 @@ def create_app():
         
         filters = {}
 
+        search_input = request.args.get("search")
+
         status = request.args.get("status") or "Todo"
         priority = request.args.get("priority")
         assigned = request.args.get("assigned")
+
         due_before = request.args.get("due_before")
         due_after = request.args.get("due_after")
+
+        if search_input:
+            filters["$or"] = [{"name": {"$regex": search_input, "$options": "i"}}, {"description": {"$regex": search_input, "$options": "i"}}]
 
         if status:
             filters["status"] = status
@@ -72,7 +78,10 @@ def create_app():
             filters["priority"] = priority
 
         if assigned:
-            filters["assigned"] = assigned
+            if assigned == "None":
+                filters["assigned"] = None
+            else:
+                filters["assigned"] = assigned
 
         if due_before or due_after:
             filters["due_date"] = {}
@@ -92,14 +101,18 @@ def create_app():
             priority_map = {"High": 1, "Medium": 2, "Low": 3}
             tasks.sort(key=lambda x: priority_map.get(x.get('priority'), 100), reverse=(order == -1))
         else:
-            tasks = list(db.devTasks.find(filters).sort(sort_by, order))
+            tasks = list(db.devTasks.find(filters).collation({"locale": "en", "strength": 2}).sort(sort_by, order))
 
-        all_assigned = db.devTasks.distinct("assigned")
+        # Avoids crashes if assigned developer is "NONE"
+        all_assigned_full = db.devTasks.distinct("assigned")
+        all_assigned = [user for user in db.devTasks.distinct("assigned") if user is not None]
+        has_unassigned = None in all_assigned_full
 
         return render_template(
             "taskList.html",
             taskList = tasks,
-            assigned_users=sorted(all_assigned),
+            has_unassigned=has_unassigned,
+            assigned_users=sorted(all_assigned, key=lambda x: x.lower()),
             current_filters = request.args,
             current_status = status
         )

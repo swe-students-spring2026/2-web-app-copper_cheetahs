@@ -18,6 +18,9 @@
     <a href="#"><i class="fa-solid fa-x" style="color: black;"></i></a>
     <h1>Filter Settings</h1>
 
+    <label>Search:</label>
+    <input class= "searchbar" type="text" name="search" placeholder="Search by task name or description" value="{{ current_filters.get('search', '') }}" />
+
     <div class="filter_row">
 
       <div class="filter_group">
@@ -54,7 +57,15 @@
       <div class="filter_group">
         <label>Assigned:</label>
         <select name="assigned">
+
           <option value="">All</option>
+
+          {% if has_unassigned %}
+            <option value="None" {% if current_filters.get('assigned') == 'None' %}selected{% endif %}>
+                Unassigned
+            </option>
+          {% endif %}
+
           {% for user in assigned_users %}
             <option value="{{ user }}"
               {% if current_filters.get('assigned') == user %}selected{% endif %}>
