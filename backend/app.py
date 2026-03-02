@@ -48,7 +48,7 @@ def create_app():
         )
     
     @app.route("/", methods=["POST"])
-    def home_tab():
+    def home_tabs():
         tasks = list(db.devTasks.find({}))
         status = request.form.get('status')
         print(status)
@@ -80,11 +80,17 @@ def create_app():
             'status': request.form.get('status'),
             'assigned': request.form.get('assigned'),
         }
-        
-        taskID = db.devTasks.insert_one(tempDoc)
 
-        # test = db.taskList.find({})
-        # print(test)
+        # placed task in collection depending on status
+        if(tempDoc.get('status') == 'Todo'):
+            taskID = db.sweTodo.insert_one(tempDoc)
+        
+        elif(tempDoc.get('status') == 'In Progress'):
+            taskID = db.sweProg.insert_one(tempDoc)
+        
+        else:
+            taskID = db.sweDone.insert_one(tempDoc)
+            
         return redirect(url_for("home"))
     
 
