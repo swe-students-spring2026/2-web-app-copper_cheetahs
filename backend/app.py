@@ -49,9 +49,13 @@ def create_app():
     
     @app.route("/", methods=["POST"])
     def home_tabs():
-        tasks = list(db.devTasks.find({}))
         status = request.form.get('status')
-        print(status)
+        if(status == 'todo'):
+            tasks = list(db.sweTodo.find({}))
+        elif(status == 'in-progress'):
+            tasks = list(db.sweProg.find({}))
+        else:
+            tasks = list(db.sweDone.find({}))
 
         return render_template("taskList.html", 
             taskList = tasks,
@@ -90,7 +94,7 @@ def create_app():
         
         else:
             taskID = db.sweDone.insert_one(tempDoc)
-            
+
         return redirect(url_for("home"))
     
 
