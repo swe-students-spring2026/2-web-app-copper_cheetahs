@@ -1,9 +1,7 @@
-{% extends 'base.html' %} 
-
-{% block stylesheets %} 
+{% extends 'base.html' %} {% block stylesheets %}
 <link
-    rel="stylesheet"
-    href="{{ url_for('static', filename='css/taskList.css') }}"
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/taskList.css') }}"
 />
 
 <link rel="stylesheet" 
@@ -12,36 +10,136 @@
     crossorigin="anonymous" 
     referrerpolicy="no-referrer" 
 />
-{% endblock %}
+{% endblock %} {% block container %}
+<form method="GET" action="{{ url_for('dev_tasks') }}">
+  <header class="tab">
+    <div class="tab_spacing"><button type="submit" name="status" value="Todo" class="tab_header {% if current_status == 'Todo' %}active{% endif %}">Todo</button></div>
+    <div class="tab_spacing"><button type="submit" name="status" value="In Progress" class="tab_header {% if current_status == 'In Progress' %}active{% endif %}">In Progress</button></div>
+    <div class="tab_spacing"><button type="submit" name="status" value="Completed" class="tab_header {% if current_status == 'Completed' %}active{% endif %}">Completed</button></div>
+  </header>
 
-{% block container %}
-<div class = 'taskContainer'>
-    {% for task in taskList %}
-        <details class = 'task'>
-            <summary>
-                <p>{{ task.name }}</p>
-                <p>{{ task.description }}</p>
-            </summary>
-            <div class = 'taskInfo'>
-                <div class = 'icons'>
-                    <a href="{{ url_for('edit_task', task_id=task._id) }}">
-                        <i class="fa-regular fa-pen-to-square edit"></i>
-                    </a>
-                    <a href="{{ url_for('delete_task_confirm', task_id=task._id) }}">
-                        <i class="fa-solid fa-trash delete"></i>
-                    </a>
-                </div>
-                <p>{{ task.description }}</p>
-            </div>
-        </details>
-    {% endfor %}
-</div>
+  <input type="hidden" name="status" value="{{ current_status }}">
+
+  <div id="filtering-popup" class="popup_overlay">
+
+    <a href="#"><i class="fa-solid fa-x" style="color: black;"></i></a>
+    <h1>Filter Settings</h1>
+
+    <label>Search:</label>
+    <input class= "searchbar" type="text" name="search" placeholder="Search by task name or description" value="{{ current_filters.get('search', '') }}" />
+
+    <div class="filter_row">
+
+      <div class="filter_group">
+        <label>Sort By:</label>
+        <select name="sort_by">
+          <option value="due_date" {% if current_filters.get('sort_by') == 'due_date' %}selected{% endif%}>Due Date</option>
+          <option value="priority" {% if current_filters.get('sort_by') == 'priority' %}selected{% endif%}>Priority</option>
+          <option value="name" {% if current_filters.get('sort_by') == 'name' %}selected{% endif%}>Name</option>
+        </select>
+      </div>
+
+      <div class="filter_group">
+        <label>Order:</label>
+        <select name="order">
+          <option value="1" {% if current_filters.get('order') == '1' %}selected{% endif %}>Ascending</option>
+          <option value="-1" {% if current_filters.get('order') == '-1' %}selected{% endif %}>Descending</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="filter_row">
+
+      <div class="filter_group">
+        <label>Priority:</label>
+        <select name="priority">
+          <option value="">All</option>
+          <option value="Low" {% if current_filters.get('priority') == 'Low' %}selected{% endif %}>Low</option>
+          <option value="Medium" {% if current_filters.get('priority') == 'Medium' %}selected{% endif %}>Medium</option>
+          <option value="High" {% if current_filters.get('priority') == 'High' %}selected{% endif %}>High</option>
+        </select>
+      </div>
+
+      <div class="filter_group">
+        <label>Assigned:</label>
+        <select name="assigned">
+
+          <option value="">All</option>
+
+          {% if has_unassigned %}
+            <option value="None" {% if current_filters.get('assigned') == 'None' %}selected{% endif %}>
+                Unassigned
+            </option>
+          {% endif %}
+
+          {% for user in assigned_users %}
+            <option value="{{ user }}"
+              {% if current_filters.get('assigned') == user %}selected{% endif %}>
+              {{ user }}
+            </option>
+          {% endfor %}
+        </select>
+
+      </div>
+      
+    </div>
+
+    <div class="filter_row">
+
+      <div class="filter_group">
+        <label>Due After:</label>
+        <input type="date" name="due_after" value="{{ current_filters.get('due_after', '') }}" />
+      </div>
+
+      <div class="filter_group">
+        <label>Due Before:</label>
+        <input type="date" name="due_before" value="{{ current_filters.get('due_before', '') }}" />
+      </div>
+
+    </div>
+
+    <div class="filter_row">
+      <button type="submit" formaction="{{ url_for('dev_tasks') }}#filtering-popup" style="padding-inline: 1em;">Filter</button>
+      <a href="{{ url_for('dev_tasks', status=current_status) }}#filtering-popup">Clear</a>
+    </div>
+
+  </div>
+  
+</form>
+
+<div class="taskContainer">
+  {% for task in taskList %}
+  <details class="task">
+    <summary>
+      <p>{{ task.name }}</p>
+      <p>{{ task.description }}</p>
+    </summary>
+    <div class = 'taskInfo'>
+      <div class = 'icons'>
+          <a href="{{ url_for('edit_task', task_id=task._id) }}">
+              <i class="fa-regular fa-pen-to-square edit"></i>
+          </a>
+          <a href="{{ url_for('delete_task_confirm', task_id=task._id) }}">
+              <i class="fa-solid fa-trash delete"></i>
+          </a>
+      </div>
+
+      {% if task.due_date %}
+        <p><strong>Due:</strong> {{ task.due_date.strftime('%Y-%m-%d') if task.due_date.__class__.__name__ == 'datetime' else task.due_date }}</p>
+      {% endif %}
+
+      <p>{{ task.description }}</p>
+    </div>
+  </details>
+  
+  {% endfor %}
+</div>  
 
 <div class="fab">
     <a class="fa-solid fa-plus" href="{{ url_for('add_task') }}"></a>
 </div>
-{% endblock %}>
-
+{% endblock %}
 
 <!-- 
 python backend/app.py 

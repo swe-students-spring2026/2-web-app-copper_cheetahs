@@ -39,31 +39,82 @@ def create_app():
     
     @app.route("/")
     def home():
-        #temporary routing task page as home for testing
-        tasks = list(db.devTasks.find({}))
-        status = 'todo'
-        return render_template("taskList.html", 
-            taskList = tasks,
-            status = status
-        )
+        """
+        Route for the home page.
+        Returns:
+            rendered template (str): The rendered HTML template.
+        """
+
+        return redirect(url_for("dev_tasks"))
     
-    @app.route("/", methods=["POST"])
-    def home_tabs():
-        status = request.form.get('status')
+    @app.route("/dev/tasks")
+    def dev_tasks():
+        """
+        Route for the dev tasks
+        """
+        # docs = db.messages.find({}).sort("created_at", -1)
+        # return render_template("index.html", docs=docs)
 
-        if(status == 'Todo'):
-            tasks = list(db.devTasks.find({'status':'Todo'}))
-            print(tasks)
-        elif(status == 'In Progress'):
-            tasks = list(db.devTasks.find({'status':'In Progress'}))
-            print(tasks)
+        #temporary routing task page as home for testing
+        
+        filters = {}
+
+        search_input = request.args.get("search")
+
+        status = request.args.get("status") or "Todo"
+        priority = request.args.get("priority")
+        assigned = request.args.get("assigned")
+
+        due_before = request.args.get("due_before")
+        due_after = request.args.get("due_after")
+
+        if search_input:
+            filters["$or"] = [{"name": {"$regex": search_input, "$options": "i"}}, {"description": {"$regex": search_input, "$options": "i"}}]
+
+        if status:
+            filters["status"] = status
+
+        if priority:
+            filters["priority"] = priority
+
+        if assigned:
+            if assigned == "None":
+                filters["assigned"] = None
+            else:
+                filters["assigned"] = assigned
+
+        if due_before or due_after:
+            filters["due_date"] = {}
+            
+            if due_before:
+                filters["due_date"]["$lte"] = datetime.datetime.strptime(due_before, "%Y-%m-%d")
+
+            if due_after:
+                filters["due_date"]["$gte"] = datetime.datetime.strptime(due_after, "%Y-%m-%d")
+
+        sort_by = request.args.get("sort_by") or "due_date"
+        order =int(request.args.get("order") or 1)
+
+        # This handles the sorting for priotity as it would else do it alphabetically instead
+        if sort_by == "priority":
+            tasks = list(db.devTasks.find(filters))
+            priority_map = {"High": 1, "Medium": 2, "Low": 3}
+            tasks.sort(key=lambda x: priority_map.get(x.get('priority'), 100), reverse=(order == -1))
         else:
-            tasks = list(db.devTasks.find({'status':'Completed'}))
-            print(tasks)
+            tasks = list(db.devTasks.find(filters).collation({"locale": "en", "strength": 2}).sort(sort_by, order))
 
-        return render_template("taskList.html", 
+        # Avoids crashes if assigned developer is "NONE"
+        all_assigned_full = db.devTasks.distinct("assigned")
+        all_assigned = [user for user in db.devTasks.distinct("assigned") if user is not None]
+        has_unassigned = None in all_assigned_full
+
+        return render_template(
+            "taskList.html",
             taskList = tasks,
-            status = status
+            has_unassigned=has_unassigned,
+            assigned_users=sorted(all_assigned, key=lambda x: x.lower()),
+            current_filters = request.args,
+            current_status = status
         )
     
 
@@ -84,9 +135,9 @@ def create_app():
             'name': request.form.get('title'),
             'description': request.form.get('description'),
             'priority': request.form.get('priority'),
-            'due_date': request.form.get('due_date'),
+            'due_date': datetime.datetime.strptime(request.form.get('due_date'), "%Y-%m-%d"),
             'status': request.form.get('status'),
-            'assigned': request.form.get('assigned'),
+            'assigned': request.form.getlist('assigned'),
         }
 
         taskID = db.devTasks.insert_one(tempDoc)
@@ -107,9 +158,9 @@ def create_app():
             "name": request.form.get("title"),
             "description": request.form.get("description"),
             "priority": request.form.get("priority"),
-            "due_date": request.form.get("due_date"),
+            "due_date": datetime.datetime.strptime(request.form.get("due_date"), "%Y-%m-%d"),
             "status": request.form.get("status"),
-            "assigned": request.form.get("assigned"),
+            "assigned": request.form.getlist("assigned"),
         }
 
         db.devTasks.update_one(

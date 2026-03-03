@@ -30,21 +30,8 @@
       <a><i class="fa-solid fa-bars"></i></a>
       <a href="{{ url_for('home')}}">Taskboard</a>
       <!-- placeholder for project name -->
-      <a><i class="fa-solid fa-filter"></i></a>
+      <a href="#filtering-popup"><i class="fa-solid fa-filter"></i></a>
     </nav>
-
-    <!-- change where action goes in future -->
-    <form class="tab" method="POST" action="">
-      <button class="tab_spacing {% if status == 'Todo' %} active {% endif %}" 
-              type="submit" name="status" value="Todo">Todo</button>
-
-      <button class="tab_spacing {% if status == 'In Progress' %} active {% endif %}"
-              type="submit" name="status" value="In Progress">In Progress</button>
-              
-      <button class="tab_spacing {% if status == 'Completed' %} active {% endif %}"
-              type="submit" name="status" value="Completed">Completed</button>
-    </form>
-
     <main>{% block container %} {% endblock %}</main>
   </body>
 </html>

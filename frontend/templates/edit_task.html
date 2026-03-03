@@ -20,12 +20,18 @@
 
     <div>
         <label for="due_date">Due Date</label>
-        <input id="due_date" name="due_date" type="text" value="{{ task.due_date }}"/>
+        <input id="due_date" name="due_date" type="date" 
+          value="{{ task.due_date.strftime('%Y-%m-%d') if task.due_date and task.due_date.__class__.__name__ == 'datetime' else task.due_date }}"
+        />
     </div>
 
     <div>
         <label for="priority">Priority</label>
-        <input id="priority" name="priority" type="text" value="{{ task.priority }}"/>
+        <select id="priority" name="priority">
+          <option value="High" {% if task.priority == "High" %}selected{% endif %}>High</option>
+          <option value="Medium" {% if task.priority == "Medium" %}selected{% endif %}>Medium</option>
+          <option value="Low" {% if task.priority == "Low" %}selected{% endif %}>Low</option>
+        </select>
     </div>
 
     <div>
@@ -39,10 +45,10 @@
 
     <div>
         <label for="assigned">Assigned</label>
-        <select id="assigned" name="assigned">
-            <option value="Developer 1" {% if task.assigned == "Developer 1" %}selected{% endif %}>Developer 1</option>
-            <option value="Developer 2" {% if task.assigned == "Developer 2" %}selected{% endif %}>Developer 2</option>
-            <option value="Developer 3" {% if task.assigned == "Developer 3" %}selected{% endif %}>Developer 3</option>
+        <select id="assigned" name="assigned" multiple>
+            <option value="Developer 1" {% if task.assigned and 'Developer 1' in task.assigned %}selected{% endif %}>Developer 1</option>
+            <option value="Developer 2" {% if task.assigned and 'Developer 2' in task.assigned %}selected{% endif %}>Developer 2</option>
+            <option value="Developer 3" {% if task.assigned and 'Developer 3' in task.assigned %}selected{% endif %}>Developer 3</option>
         </select>
     </div>
 
