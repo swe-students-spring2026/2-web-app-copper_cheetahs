@@ -15,9 +15,9 @@ pytest-flask = "*"
 coverage = "*"
 dnspython = "*"
 gunicorn = "*"
-flask = "*"
 pymongo = "*"
 jinja2 = "*"
+flask = "*"
 
 [dev-packages]
 

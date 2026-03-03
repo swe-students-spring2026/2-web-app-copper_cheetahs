@@ -2,11 +2,11 @@
 <html>
   <head>
     <title></title>
-    {% block stylesheets %} {% endblock %}
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}"
     />
+    {% block stylesheets %} {% endblock %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link
@@ -24,6 +24,8 @@
     />
   </head>
   <body>
+
+
     <nav>
       <a><i class="fa-solid fa-bars"></i></a>
       <a href="{{ url_for('home')}}">Taskboard</a>
@@ -33,3 +35,7 @@
     <main>{% block container %} {% endblock %}</main>
   </body>
 </html>
+
+<!--
+python backend/app.py
+-->

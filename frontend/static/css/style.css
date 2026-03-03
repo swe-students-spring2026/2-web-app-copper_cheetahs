@@ -61,6 +61,8 @@ nav a:hover {
   align-items: center;
   justify-content: center;
 
+  background-color: transparent;
+  border: none;
   width: 100%;
 }
 
@@ -79,3 +81,9 @@ nav a:hover {
 .tab_spacing button.active {
   border-bottom-color: black;
 }
+
+.active {
+  border-bottom: 2px solid rgb(209, 208, 208);
+}
+
+
