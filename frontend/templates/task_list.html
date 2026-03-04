@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% block stylesheets %}
 <link
   rel="stylesheet"
-  href="{{ url_for('static', filename='css/taskList.css') }}"
+  href="{{ url_for('static', filename='css/task_list.css') }}"
 />
 
 <link rel="stylesheet" 
@@ -11,7 +11,7 @@
     referrerpolicy="no-referrer" 
 />
 {% endblock %} {% block container %}
-<form method="GET" action="{{ url_for('dev_tasks') }}">
+<form method="GET" action="{{ url_for('dev_tasks', project_id=project_id) }}">
   <header class="tab">
     <div class="tab_spacing"><button type="submit" name="status" value="Todo" class="tab_header {% if current_status == 'Todo' %}active{% endif %}">Todo</button></div>
     <div class="tab_spacing"><button type="submit" name="status" value="In Progress" class="tab_header {% if current_status == 'In Progress' %}active{% endif %}">In Progress</button></div>
@@ -100,8 +100,8 @@
     </div>
 
     <div class="filter_row">
-      <button type="submit" formaction="{{ url_for('dev_tasks') }}#filtering-popup" style="padding-inline: 1em;">Filter</button>
-      <a href="{{ url_for('dev_tasks', status=current_status) }}#filtering-popup">Clear</a>
+      <button type="submit" formaction="{{ url_for('dev_tasks', project_id=project_id) }}#filtering-popup" style="padding-inline: 1em;">Filter</button>
+      <a href="{{ url_for('dev_tasks', project_id=project_id, status=current_status) }}#filtering-popup">Clear</a>
     </div>
 
   </div>
@@ -109,7 +109,7 @@
 </form>
 
 <div class="taskContainer">
-  {% for task in taskList %}
+  {% for task in task_list %}
   <details class="task">
     <summary>
       <p>{{ task.name }}</p>
@@ -117,10 +117,10 @@
     </summary>
     <div class = 'taskInfo'>
       <div class = 'icons'>
-          <a href="{{ url_for('edit_task', task_id=task._id) }}">
+          <a href="{{ url_for('edit_task',  project_id=project_id, task_id=task._id) }}">
               <i class="fa-regular fa-pen-to-square edit"></i>
           </a>
-          <a href="{{ url_for('delete_task_confirm', task_id=task._id) }}">
+          <a href="{{ url_for('delete_task_confirm',  project_id=project_id, task_id=task._id) }}">
               <i class="fa-solid fa-trash delete"></i>
           </a>
       </div>
@@ -137,7 +137,7 @@
 </div>  
 
 <div class="fab">
-    <a class="fa-solid fa-plus" href="{{ url_for('add_task') }}"></a>
+    <a class="fa-solid fa-plus" href="{{ url_for('add_task', project_id=project_id) }}"></a>
 </div>
 {% endblock %}
 

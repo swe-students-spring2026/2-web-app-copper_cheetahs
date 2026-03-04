@@ -1,0 +1,55 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    height:100vh;
+    width: 100vw;
+}
+
+.roleContainer {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: space-around;
+
+    font-size:10em;
+    font-family:"Open Sans", sans-serif;
+    height:60%;
+}
+
+h1 {
+    font-size:1.3em;
+}
+
+.roleContainer a {
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: flex-start;
+
+    padding:0.1em; 
+
+    background-color: rgb(228, 227, 227);
+    border-radius: 20%;
+    border: 2px solid black;
+
+    text-decoration:none;
+    color:black;
+
+    cursor:pointer;
+}
+
+.roleContainer a:hover {
+    box-shadow: 3px 3px rgb(202, 202, 202);
+}
+
+.roleContainer a .icon {
+    height:80%;
+}
+
+.roleContainer a p {
+    font-size:0.2em;
+}

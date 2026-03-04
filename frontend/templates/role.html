@@ -1,0 +1,24 @@
+{% extends 'template.html' %} 
+
+{% block stylesheets %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/login.css') }}"
+/>
+{% endblock %} 
+
+{% block container %}
+<h1>Who are you signing in as?</h1>
+
+<div class="roleContainer">
+  <a href="{{ url_for('dev_login') }}">
+    <i class="fa-solid fa-toolbox icon"></i>
+    <p>Developer</p>
+  </a>
+
+  <a href="{{ url_for('stk_login') }}">
+    <i class="fa-solid fa-briefcase icon"></i>
+    <p>Stakeholder</p>
+  </a>
+</div>
+{% endblock %}

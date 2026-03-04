@@ -1,12 +1,16 @@
-{% extends 'base.html' %} {% block stylesheets %}
+{% extends 'template.html' %} 
+
+{% block stylesheets %}
 <link
   rel="stylesheet"
   href="{{ url_for('static', filename='css/login.css') }}"
 />
-{% endblock %} {% block container %}
+{% endblock %} 
+
+{% block container %}
 <h1>Login</h1>
 <!-- add path to action -->
-<form id="login" action="/" method="GET">
+<form id="login" method="POST">
   <div>
     <label for="username">Enter Username:</label>
     <input type="text" class="username" name="username" />
@@ -17,6 +21,6 @@
     <input type="text" class="password" name="password" />
   </div>
 
-  <button type="submit" class="submit">Search</button>
+  <button type="submit" class="submit">Login</button>
 </form>
 {% endblock %}
