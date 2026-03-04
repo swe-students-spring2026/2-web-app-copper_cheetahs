@@ -131,8 +131,8 @@ def create_app():
         has_unassigned = None in all_assigned_full
 
         return render_template(
-            "taskList.html",
-            taskList = tasks,
+            "task_list.html",
+            task_list = tasks,
             has_unassigned=has_unassigned,
             assigned_users=sorted(all_assigned, key=lambda x: x.lower()),
             current_filters = request.args,

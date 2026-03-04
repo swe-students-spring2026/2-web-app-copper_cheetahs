@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% block stylesheets %}
 <link
   rel="stylesheet"
-  href="{{ url_for('static', filename='css/taskList.css') }}"
+  href="{{ url_for('static', filename='css/task_list.css') }}"
 />
 
 <link rel="stylesheet" 
@@ -109,7 +109,7 @@
 </form>
 
 <div class="taskContainer">
-  {% for task in taskList %}
+  {% for task in task_list %}
   <details class="task">
     <summary>
       <p>{{ task.name }}</p>
