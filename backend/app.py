@@ -47,6 +47,23 @@ def create_app():
 
         return redirect(url_for("dev_tasks"))
     
+    @app.route("/role")
+    def role_screen():
+        # choose dev or stakeholder
+        return render_template("role.html")
+
+    @app.route("/dev/login")
+    def dev_login():
+        # dev login page, no actual login function 
+        # just click button to go next for now
+        return render_template("login.html")
+    
+    @app.route("/stk/login")
+    def stk_login():
+        # stakeholder login page, no actual login function 
+        # just click button to go next for now
+        return render_template("login.html")
+
     @app.route("/dev/tasks")
     def dev_tasks():
         """
@@ -116,12 +133,6 @@ def create_app():
             current_filters = request.args,
             current_status = status
         )
-    
-
-    @app.route("/login")
-    def login():
-        # Route for the login page.
-        return render_template("login.html")
 
 
     # add-task
