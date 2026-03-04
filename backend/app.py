@@ -68,7 +68,89 @@ def create_app():
     def stk_login():
         # stakeholder login page, no actual login function 
         # just click button to go next for now
+        if(request.method == 'POST'):
+            username = request.form.get('username')
+            password = request.form.get('password')
+            return redirect(url_for("stk_projects"))
+
         return render_template("login.html")
+    
+    @app.route("/stk/projects", methods = ['GET'])
+    def stk_projects():
+        project_list = list(db.projects.find({}))
+
+        return render_template(
+            "stakeholder_home.html",
+            project_list = project_list
+        )
+    
+    @app.route("/stk/projects/create", methods = ['GET', 'POST'])
+    def stk_add_project():
+        # add to project list
+        if(request.method=='POST'):
+            assigned = request.form.get('assigned')
+            if assigned:
+                assigned = assigned.strip()
+            else:
+                assigned = None
+
+            tempDoc = {
+                'projectID': str(uuid.uuid4()),
+                'name': request.form.get('title'),
+                'description': request.form.get('description'),
+                'assigned': assigned
+            }
+
+            db.projects.insert_one(tempDoc)
+            return redirect(url_for('stk_projects'))
+        
+        return render_template("add_project.html")
+    
+    ## START OF CHANGING STUFF TO STK
+
+    # edit-project
+    @app.route("/stk/projects/edit/<project_id>")
+    def edit_project(project_id):
+        project = db.projects.find_one({"projectID": project_id})
+        if not project:
+            return "Project not found", 404
+        print('hello')
+        return render_template("edit_project.html", project=project, project_id=project_id)
+    
+    @app.route("/stk/projects/edit/<project_id>", methods=["POST"])
+    def edit_project_post(project_id):
+        assigned = request.form.get('assigned')
+        if assigned:
+            assigned = assigned.strip()
+        else:
+            assigned = None
+        updated_fields = {
+            "name": request.form.get("title"),
+            "description": request.form.get("description"),
+            "assigned": assigned,
+        }
+
+        db.projects.update_one(
+            {"projectID": project_id},
+            {"$set": updated_fields}
+        )
+
+        return redirect(url_for("stk_projects"))
+
+    # delete-task
+    @app.route("/stk/projects/<project_id>/delete", methods=["GET"])
+    def delete_project_confirm(project_id):
+        project = db.projects.find_one({"projectID": project_id})
+        if not project:
+            return "Project not found", 404
+        return render_template("delete_project_confirm.html", project=project, project_id=project_id)
+    
+    @app.route("/stk/projects/<project_id>/delete", methods=["POST"])
+    def delete_project(project_id):
+        db.projects.delete_one({"projectID": project_id})
+        return redirect(url_for("stk_projects"))
+    
+    ## END
 
     @app.route("/dev/projects", methods = ['GET'])
     def dev_projects():

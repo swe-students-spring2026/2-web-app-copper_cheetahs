@@ -1,0 +1,43 @@
+{% extends 'base.html' %} {% block stylesheets %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/stakeholder_home.css') }}"
+/>
+{% endblock %} {% block container %}
+<div class="projectContainer">
+  {% for proj in project_list %}
+  <details class="project">
+    <summary>
+      <p><b>Name: </b>{{ proj.name }}</p>
+      <p><b>ID: </b>{{ proj.projectID }}</p>
+    </summary>
+    <div class="projectInfo">
+      <div class="icons">
+        <a href="{{ url_for('edit_project', project_id=proj.projectID) }}">
+          <i class="fa-regular fa-pen-to-square edit"></i>
+        </a>
+        <a
+          href="{{ url_for('delete_project_confirm', project_id=proj.projectID) }}"
+        >
+          <i class="fa-solid fa-trash delete"></i>
+        </a>
+        <a href="{{ url_for('dev_tasks', project_id=proj.projectID) }}">
+          <i class="fa-solid fa-circle-info info"></i>
+        </a>
+      </div>
+      <p><b>Description: </b>{{ proj.description }}</p>
+    </div>
+  </details>
+
+  {% endfor %}
+</div>
+
+<div class="fab">
+  <a class="fa-solid fa-plus" href="{{ url_for('stk_add_project') }}"></a>
+</div>
+
+{% endblock %}
+
+<!--
+python backend/app.py
+-->
