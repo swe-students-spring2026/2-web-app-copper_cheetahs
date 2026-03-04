@@ -112,7 +112,9 @@ def create_app():
 
         #temporary routing task page as home for testing
         
-        filters = {}
+        filters = {
+            'projectID': project_id
+        }
 
         search_input = request.args.get("search")
 
