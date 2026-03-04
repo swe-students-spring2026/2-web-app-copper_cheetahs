@@ -4,7 +4,7 @@ I'm putting this here for the sole purpose of fixing linting issues.
 """
 import os
 import datetime
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 import pymongo
 from bson.objectid import ObjectId
 from dotenv import load_dotenv, dotenv_values
@@ -26,6 +26,8 @@ def create_app():
     # load flask config from env variables
     config = dotenv_values()
     app.config.from_mapping(config)
+
+    app.secret_key = "tempkeyforsession"
 
     cxn = pymongo.MongoClient(os.getenv("MONGO_URI"))
     db = cxn[os.getenv("MONGO_DBNAME")]
@@ -60,7 +62,13 @@ def create_app():
         if(request.method == 'POST'):
             username = request.form.get('username')
             password = request.form.get('password')
+            
+            if username:
+                session['username'] = username
+
             return redirect(url_for("dev_projects"))
+        
+            
 
         return render_template("login.html")
     
@@ -71,6 +79,8 @@ def create_app():
         if(request.method == 'POST'):
             username = request.form.get('username')
             password = request.form.get('password')
+            if username:
+                session['username'] = username
             return redirect(url_for("stk_projects"))
 
         return render_template("login.html")
@@ -317,7 +327,96 @@ def create_app():
     def delete_task(project_id, task_id):
         db.devTasks.delete_one({"_id": ObjectId(task_id)})
         return redirect(url_for("dev_tasks", project_id=project_id))
+    
 
+    # changes that allow comments for tasks
+    @app.route("/dev/<project_id>/tasks/<task_id>/comments", methods=["GET", "POST"])
+    def task_comments(project_id, task_id):
+        if request.method == "POST":
+            title = request.form.get("comment_title")
+            comment_text = request.form.get("comment_text")
+            user = session.get("username", "NONE")
+
+            if comment_text:
+                new_comment = {
+                    'comment_id': str(uuid.uuid4()),
+                    "title": title,
+                    "text": comment_text,
+                    "posted_by": user,
+                    "created_at": datetime.datetime.now()
+                }
+                db.devTasks.update_one(
+                {"_id": ObjectId(task_id)},
+                {"$push": {"comments": new_comment}}
+                )
+
+            return redirect(url_for("task_comments", project_id=project_id, task_id=task_id))
+        
+        task = db.devTasks.find_one({"_id": ObjectId(task_id)})
+
+        if not task:
+            return "Task not found", 404
+        
+        return render_template("comments.html", task=task, project_id=project_id)
+    
+    @app.route("/dev/<project_id>/tasks/<task_id>/comments/<comment_id>/delete", methods=["GET"])
+    def delete_comment_confirm(project_id, task_id, comment_id):
+        task = db.devTasks.find_one({"_id": ObjectId(task_id)})
+        comment_to_delete = None
+        for c in task.get("comments", []):
+            if c.get("comment_id") == comment_id:
+                comment_to_delete = c
+                break
+
+        if not comment_to_delete:
+            return "Comment not found", 404
+        return render_template("delete_comment_confirm.html", project_id=project_id, task_id=task_id, comment=comment_to_delete)
+
+    
+    @app.route("/dev/<project_id>/tasks/<task_id>/comments/<comment_id>/delete", methods=["POST"])
+    def delete_comment(project_id, task_id, comment_id):
+        db.devTasks.update_one(
+            {"_id": ObjectId(task_id)},
+            {"$pull": {"comments": {"comment_id": comment_id}}}
+        )
+        return redirect(url_for("task_comments", project_id=project_id, task_id=task_id))
+    
+    
+    @app.route("/dev/<project_id>/tasks/<task_id>/comments/<comment_id>/edit", methods=["GET", "POST"])
+    def edit_comment(project_id, task_id, comment_id):
+        if request.method == "POST":
+            updated_fields = {
+                "comments.$.title": request.form.get("comment_title"),
+                "comments.$.text": request.form.get("comment_text"),
+            }
+
+            db.devTasks.update_one(
+            {
+                "_id": ObjectId(task_id), 
+                "comments.comment_id": comment_id 
+            },
+            {"$set": updated_fields}
+            )
+
+            return redirect(url_for("task_comments", project_id=project_id, task_id=task_id))
+        
+        task = db.devTasks.find_one({"_id": ObjectId(task_id)})
+        if not task:
+            return "Task not found", 404
+        
+        comment_for_edit = None
+        for c in task.get("comments", []):
+            if c.get("comment_id") == comment_id:
+                comment_for_edit = c
+                break
+
+        if not comment_for_edit:
+            return "Comment not found", 404
+    
+        return render_template("edit_comment.html", project_id=project_id, task_id=task_id, comment=comment_for_edit, task=task)
+    
+    # end of changes for comments branch
+                
 
     # error
     @app.errorhandler(Exception)
@@ -330,6 +429,7 @@ def create_app():
             rendered template (str): The rendered HTML template.
         """
         return render_template("error.html", error=e)
+    
 
     return app
 

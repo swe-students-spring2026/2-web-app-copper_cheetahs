@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block container %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/comments.css') }}">
+<link rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" 
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" 
+    crossorigin="anonymous" 
+    referrerpolicy="no-referrer" 
+/>
+<div class="commentsContainer">
+    <div class="task-header">
+        <h2>{{ task.name }}</h2>
+        <p>{{ task.description }}</p>
+    </div>
+
+    <h3>Comments:</h3>
+    
+    <div class="comments-list">
+        {% if task.comments %}
+            {% for comment in task.comments %}
+                <div class="comment">
+                    <p>{{ comment.title }}</p>
+                    <div class="commented-details">
+                        <p>{{ comment.text }}</p>
+                        <p>Posted by: {{ comment.posted_by }}</p>
+                        <p>On: {{comment.created_at.strftime('%b %d, %Y')}}</p>
+                    </div>   
+
+                    {% if comment.posted_by == session.get("username") %}
+
+                        <div class = 'icons'>
+
+                            <a href="{{ url_for('edit_comment',  project_id=project_id, task_id=task._id,comment_id=comment.comment_id) }}">
+                                <i class="fa-regular fa-pen-to-square edit"></i>
+                            </a>
+                            <a href="{{ url_for('delete_comment_confirm',  project_id=project_id, task_id=task._id, comment_id=comment.comment_id) }}">
+                                <i class="fa-solid fa-trash delete"></i>
+                            </a>
+                        </div>
+                        
+                    {% endif %}
+                </div>   
+
+            {% endfor %}
+        {% else %}
+            <p>No comments yet</p>
+        {% endif %}
+    </div>
+
+    <form class="comment-form" method="POST">
+        <input type="text" name="comment_title" placeholder="Comment Title" required />
+        <textarea name="comment_text" placeholder="Write a comment..." required rows="3"></textarea>
+        <button type="submit">Post Comment</button>
+    </form>
+
+</div>
+
+{% endblock %}

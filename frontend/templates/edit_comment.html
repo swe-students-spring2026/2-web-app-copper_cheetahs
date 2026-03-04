@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block container %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/comments.css') }}">
+<div class="commentsContainer">
+    <div class="task-header">
+        <h2>{{ task.name }}</h2>
+        <p>{{ task.description }}</p>
+    </div>
+
+    <form class="comment-form" method="POST">
+        <input type="text" name="comment_title" placeholder="Comment Title" value="{{ comment.title }}" required />
+        <textarea name="comment_text" required rows="4">{{ comment.text }}</textarea>
+        <button type="submit">Update Comment</button>
+        <a href="{{ url_for('task_comments', project_id=project_id, task_id=task_id) }}">Cancel</a>
+    </form>
+
+    
+
+</div>
+
+{% endblock %}

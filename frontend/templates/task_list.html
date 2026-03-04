@@ -117,6 +117,10 @@
     </summary>
     <div class = 'taskInfo'>
       <div class = 'icons'>
+          <a href="{{ url_for('task_comments',  project_id=project_id, task_id=task._id) }}">
+            <i class="fa-regular fa-comment comment"></i>
+          </a>
+
           <a href="{{ url_for('edit_task',  project_id=project_id, task_id=task._id) }}">
               <i class="fa-regular fa-pen-to-square edit"></i>
           </a>
