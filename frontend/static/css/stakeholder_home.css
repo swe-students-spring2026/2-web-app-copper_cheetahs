@@ -1,4 +1,4 @@
-.taskContainer {
+.projectContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,7 +13,7 @@
   background-color: rgb(228, 227, 227);
 }
 
-.taskContainer .task {
+.projectContainer .project {
   display: flex;
   flex-direction: column;
 
@@ -28,7 +28,7 @@
   cursor: pointer;
 }
 
-.taskContainer .task summary {
+.projectContainer .project summary {
   display: flex;
   flex-direction: column;
   gap: 0.5em;
@@ -38,28 +38,28 @@
   transition: 0.4s;
 }
 
-.taskContainer .task summary:hover {
+.projectContainer .project summary:hover {
   box-shadow: 2px 2px rgb(202, 202, 202);
 }
 
-.taskContainer details[open] summary {
+.projectContainer details[open] summary {
   background-color: rgb(209, 208, 208);
 }
 
-.taskContainer .task summary p {
+.projectContainer .project summary p {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.taskContainer .task .taskInfo {
+.projectContainer .project .projectInfo {
   display: block;
   padding: 1em;
   overflow: auto;
   max-width: 100%;
 }
 
-.taskContainer .task .taskInfo .icons {
+.projectContainer .project .projectInfo .icons {
   display: flex;
   flex-direction: column;
   gap: 0.5em;
@@ -78,7 +78,11 @@
   color: rgb(206, 109, 109);
 }
 
-.taskContainer .task .taskInfo p {
+.icons .info {
+  font-size: 1.2em;
+}
+
+.projectContainer .project .projectInfo p {
   overflow-wrap: break-word;
 }
 

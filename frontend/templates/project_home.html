@@ -1,25 +1,25 @@
-{% extends 'base.html' %} 
-
-{% block stylesheets %}
+{% extends 'base.html' %} {% block stylesheets %}
 <link
   rel="stylesheet"
   href="{{ url_for('static', filename='css/projects_home.css') }}"
 />
-{% endblock %} 
-
-{% block container %} 
+{% endblock %} {% block container %}
 <div class="projectContainer">
-    {% for proj in project_list %}
-    <a class="project" href="{{ url_for('dev_tasks', project_id=proj.projectID) }}">
-        <p>{{ proj.name }}</p>
-        <p>{{ proj.projectID }}</p>
-    </a>
-    
-    {% endfor %}
-</div>  
+  {% for proj in project_list %}
+  <a
+    class="project"
+    href="{{ url_for('dev_tasks', project_id=proj.projectID) }}"
+  >
+    <p><b>Name: </b>{{ proj.name }}</p>
+    <p><b>ID: </b>{{ proj.projectID }}</p>
+    <p><b>Description: </b>{{ proj.description }}</p>
+  </a>
+
+  {% endfor %}
+</div>
 
 <div class="fab">
-    <a class="fa-solid fa-plus" href="{{ url_for('add_project') }}"></a>
+  <a class="fa-solid fa-plus" href="{{ url_for('add_project') }}"></a>
 </div>
 
 {% endblock %}
