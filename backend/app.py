@@ -104,7 +104,6 @@ def create_app():
 
     @app.route("/dev/projects/<project_id>/tasks")
     def dev_tasks(project_id):
-        print('dev', project_id)
         """
         Route for the dev tasks
         """
@@ -166,6 +165,7 @@ def create_app():
 
         return render_template(
             "task_list.html",
+            project_id = project_id,
             task_list = tasks,
             has_unassigned=has_unassigned,
             assigned_users=sorted(all_assigned, key=lambda x: x.lower()),
@@ -175,13 +175,14 @@ def create_app():
 
 
     # add-task
-    @app.route("/dev/add-task")
-    def add_task():
-        return render_template("add_task.html")
+    @app.route("/dev/<project_id>/add-task")
+    def add_task(project_id):
+        return render_template("add_task.html", project_id=project_id)
     
-    @app.route("/dev/add-task",  methods=["POST"])
-    def add_task_post():
+    @app.route("/dev/<project_id>/add-task",  methods=["POST"])
+    def add_task_post(project_id):
         tempDoc = {
+            'projectID': project_id,
             'name': request.form.get('title'),
             'description': request.form.get('description'),
             'priority': request.form.get('priority'),
@@ -191,19 +192,19 @@ def create_app():
         }
 
         taskID = db.devTasks.insert_one(tempDoc)
-        return redirect(url_for("dev_tasks"))
+        return redirect(url_for("dev_tasks", project_id=project_id))
     
 
     # edit-task
-    @app.route("/dev/edit-task/<task_id>")
-    def edit_task(task_id):
+    @app.route("/dev/<project_id>/edit-task/<task_id>")
+    def edit_task(project_id, task_id):
         task = db.devTasks.find_one({"_id": ObjectId(task_id)})
         if not task:
             return "Task not found", 404
-        return render_template("edit_task.html", task=task)
+        return render_template("edit_task.html", task=task, project_id=project_id)
     
-    @app.route("/dev/edit-task/<task_id>/edit", methods=["POST"])
-    def edit_task_post(task_id):
+    @app.route("/dev/<project_id>/edit-task/<task_id>/edit", methods=["POST"])
+    def edit_task_post(project_id, task_id):
         updated_fields = {
             "name": request.form.get("title"),
             "description": request.form.get("description"),
@@ -218,20 +219,20 @@ def create_app():
             {"$set": updated_fields}
         )
 
-        return redirect(url_for("dev_tasks"))
+        return redirect(url_for("dev_tasks",project_id=project_id))
 
     # delete-task
-    @app.route("/dev/tasks/<task_id>/delete", methods=["GET"])
-    def delete_task_confirm(task_id):
+    @app.route("/dev/<project_id>/tasks/<task_id>/delete", methods=["GET"])
+    def delete_task_confirm(project_id, task_id):
         task = db.devTasks.find_one({"_id": ObjectId(task_id)})
         if not task:
             return "Task not found", 404
-        return render_template("delete_task_confirm.html", task=task)
+        return render_template("delete_task_confirm.html", task=task, project_id=project_id)
     
-    @app.route("/dev/tasks/<task_id>/delete", methods=["POST"])
-    def delete_task(task_id):
+    @app.route("/dev/<project_id>/tasks/<task_id>/delete", methods=["POST"])
+    def delete_task(project_id, task_id):
         db.devTasks.delete_one({"_id": ObjectId(task_id)})
-        return redirect(url_for("dev_tasks"))
+        return redirect(url_for("dev_tasks", project_id=project_id))
 
 
     # error
