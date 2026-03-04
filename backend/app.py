@@ -102,9 +102,9 @@ def create_app():
         
         return render_template("add_project.html")
 
-
-    @app.route("/dev/tasks")
-    def dev_tasks():
+    @app.route("/dev/projects/<project_id>/tasks")
+    def dev_tasks(project_id):
+        print('dev', project_id)
         """
         Route for the dev tasks
         """

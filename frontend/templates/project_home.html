@@ -3,16 +3,17 @@
 {% block stylesheets %}
 <link
   rel="stylesheet"
-  href="{{ url_for('static', filename='css/project_home.css') }}"
+  href="{{ url_for('static', filename='css/projects_home.css') }}"
 />
 {% endblock %} 
 
 {% block container %} 
 <div class="projectContainer">
     {% for proj in project_list %}
-    <div class="project">
+    <a class="project" href="{{ url_for('dev_tasks', project_id=proj.projectID) }}">
         <p>{{ proj.name }}</p>
-    </div>
+        <p>{{ proj.projectID }}</p>
+    </a>
     
     {% endfor %}
 </div>  

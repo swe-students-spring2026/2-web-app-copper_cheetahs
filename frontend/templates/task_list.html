@@ -11,7 +11,7 @@
     referrerpolicy="no-referrer" 
 />
 {% endblock %} {% block container %}
-<form method="GET" action="{{ url_for('dev_tasks') }}">
+<form method="GET" action="{{ url_for('dev_tasks', project_id=project_id) }}">
   <header class="tab">
     <div class="tab_spacing"><button type="submit" name="status" value="Todo" class="tab_header {% if current_status == 'Todo' %}active{% endif %}">Todo</button></div>
     <div class="tab_spacing"><button type="submit" name="status" value="In Progress" class="tab_header {% if current_status == 'In Progress' %}active{% endif %}">In Progress</button></div>
@@ -100,8 +100,8 @@
     </div>
 
     <div class="filter_row">
-      <button type="submit" formaction="{{ url_for('dev_tasks') }}#filtering-popup" style="padding-inline: 1em;">Filter</button>
-      <a href="{{ url_for('dev_tasks', status=current_status) }}#filtering-popup">Clear</a>
+      <button type="submit" formaction="{{ url_for('dev_tasks', project_id=project_id) }}#filtering-popup" style="padding-inline: 1em;">Filter</button>
+      <a href="{{ url_for('dev_tasks', project_id=project_id, status=current_status) }}#filtering-popup">Clear</a>
     </div>
 
   </div>
