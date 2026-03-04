@@ -45,20 +45,25 @@ def create_app():
             rendered template (str): The rendered HTML template.
         """
 
-        return redirect(url_for("dev_tasks"))
+        return redirect(url_for("role_screen"))
     
     @app.route("/role")
     def role_screen():
         # choose dev or stakeholder
         return render_template("role.html")
 
-    @app.route("/dev/login")
+    @app.route("/dev/login", methods = ['POST', 'GET'])
     def dev_login():
         # dev login page, no actual login function 
         # just click button to go next for now
+        if(request.method == 'POST'):
+            username = request.form.get('username')
+            password = request.form.get('password')
+            return redirect(url_for("dev_tasks"))
+
         return render_template("login.html")
     
-    @app.route("/stk/login")
+    @app.route("/stk/login", methods = ['POST', 'GET'])
     def stk_login():
         # stakeholder login page, no actual login function 
         # just click button to go next for now
@@ -152,7 +157,7 @@ def create_app():
         }
 
         taskID = db.devTasks.insert_one(tempDoc)
-        return redirect(url_for("home"))
+        return redirect(url_for("dev_tasks"))
     
 
     # edit-task
@@ -179,7 +184,7 @@ def create_app():
             {"$set": updated_fields}
         )
 
-        return redirect(url_for("home"))
+        return redirect(url_for("dev_tasks"))
 
     # delete-task
     @app.route("/tasks/<task_id>/delete", methods=["GET"])
@@ -192,7 +197,7 @@ def create_app():
     @app.route("/tasks/<task_id>/delete", methods=["POST"])
     def delete_task(task_id):
         db.devTasks.delete_one({"_id": ObjectId(task_id)})
-        return redirect(url_for("home"))
+        return redirect(url_for("dev_tasks"))
 
 
     # error

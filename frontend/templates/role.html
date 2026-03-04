@@ -1,4 +1,4 @@
-{% extends 'base.html' %} 
+{% extends 'template.html' %} 
 
 {% block stylesheets %}
 <link
@@ -8,19 +8,17 @@
 {% endblock %} 
 
 {% block container %}
-<h1>Login</h1>
-<!-- add path to action -->
-<form id="login" action="/" method="GET">
-  <div>
-    <label for="username">Enter Username:</label>
-    <input type="text" class="username" name="username" />
-  </div>
+<h1>Who are you signing in as?</h1>
 
-  <div>
-    <label for="password">Enter Password</label>
-    <input type="text" class="password" name="password" />
-  </div>
+<div class="roleContainer">
+  <a href="{{ url_for('dev_login') }}">
+    <i class="fa-solid fa-toolbox icon"></i>
+    <p>Developer</p>
+  </a>
 
-  <button type="submit" class="submit">Search</button>
-</form>
+  <a href="{{ url_for('stk_login') }}">
+    <i class="fa-solid fa-briefcase icon"></i>
+    <p>Stakeholder</p>
+  </a>
+</div>
 {% endblock %}

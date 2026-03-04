@@ -1,4 +1,4 @@
-{% extends 'base.html' %} 
+{% extends 'template.html' %} 
 
 {% block stylesheets %}
 <link
@@ -10,7 +10,7 @@
 {% block container %}
 <h1>Login</h1>
 <!-- add path to action -->
-<form id="login" action="/" method="GET">
+<form id="login" method="POST">
   <div>
     <label for="username">Enter Username:</label>
     <input type="text" class="username" name="username" />
