@@ -1,0 +1,73 @@
+.commentsContainer {
+    margin: 2em;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+}
+
+.task-header {
+    background-color: lightgrey;
+    padding: 1em;
+}
+
+.comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.comment {
+    border: 1px solid #ccc;
+    padding: 1em;
+    background-color: #fcfcfc;
+}
+
+.commented-details {
+    margin-top: 0.5em;
+    color: #444;
+    font-size: 0.9em;
+}
+
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8em;
+    margin-top: 1em;
+}
+
+.comment-form input,
+.comment-form textarea {
+    padding: 0.8em;
+    border: 1px solid #161966;
+    font-family: inherit;
+}
+
+.comment-form button {
+    padding: 0.8em;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 2em;
+    font-weight: bold;
+}
+
+.comment .icons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+  
+    float: right;
+    padding-left: auto;
+  }
+  
+  .icons .edit {
+    font-size: 1.2em;
+    color: rgb(211, 155, 24);
+  }
+  
+  .icons .delete {
+    font-size: 1.2em;
+    color: rgb(206, 109, 109);
+  }
+  
