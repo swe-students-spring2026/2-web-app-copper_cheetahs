@@ -8,6 +8,7 @@ from flask import Flask, render_template, request, redirect, url_for
 import pymongo
 from bson.objectid import ObjectId
 from dotenv import load_dotenv, dotenv_values
+import uuid
 
 load_dotenv()
 
@@ -59,7 +60,7 @@ def create_app():
         if(request.method == 'POST'):
             username = request.form.get('username')
             password = request.form.get('password')
-            return redirect(url_for("dev_tasks"))
+            return redirect(url_for("dev_projects"))
 
         return render_template("login.html")
     
@@ -68,6 +69,39 @@ def create_app():
         # stakeholder login page, no actual login function 
         # just click button to go next for now
         return render_template("login.html")
+
+    @app.route("/dev/projects", methods = ['GET'])
+    def dev_projects():
+        # dev project list
+        project_list = list(db.projects.find({}))
+
+        return render_template(
+            "project_home.html",
+            project_list = project_list
+        )
+
+    @app.route("/dev/projects/create", methods = ['GET', 'POST'])
+    def add_project():
+        # add to dev project list
+        if(request.method=='POST'):
+            assigned = request.form.get('assigned')
+            if assigned:
+                assigned = assigned.strip()
+            else:
+                assigned = None
+
+            tempDoc = {
+                'projectID': str(uuid.uuid4()),
+                'name': request.form.get('title'),
+                'description': request.form.get('description'),
+                'assigned': assigned
+            }
+
+            db.projects.insert_one(tempDoc)
+            return redirect(url_for('dev_projects'))
+        
+        return render_template("add_project.html")
+
 
     @app.route("/dev/tasks")
     def dev_tasks():
@@ -141,11 +175,11 @@ def create_app():
 
 
     # add-task
-    @app.route("/add-task")
+    @app.route("/dev/add-task")
     def add_task():
         return render_template("add_task.html")
     
-    @app.route("/add-task",  methods=["POST"])
+    @app.route("/dev/add-task",  methods=["POST"])
     def add_task_post():
         tempDoc = {
             'name': request.form.get('title'),
@@ -161,14 +195,14 @@ def create_app():
     
 
     # edit-task
-    @app.route("/edit-task/<task_id>")
+    @app.route("/dev/edit-task/<task_id>")
     def edit_task(task_id):
         task = db.devTasks.find_one({"_id": ObjectId(task_id)})
         if not task:
             return "Task not found", 404
         return render_template("edit_task.html", task=task)
     
-    @app.route("/edit-task/<task_id>/edit", methods=["POST"])
+    @app.route("/dev/edit-task/<task_id>/edit", methods=["POST"])
     def edit_task_post(task_id):
         updated_fields = {
             "name": request.form.get("title"),
@@ -187,14 +221,14 @@ def create_app():
         return redirect(url_for("dev_tasks"))
 
     # delete-task
-    @app.route("/tasks/<task_id>/delete", methods=["GET"])
+    @app.route("/dev/tasks/<task_id>/delete", methods=["GET"])
     def delete_task_confirm(task_id):
         task = db.devTasks.find_one({"_id": ObjectId(task_id)})
         if not task:
             return "Task not found", 404
         return render_template("delete_task_confirm.html", task=task)
     
-    @app.route("/tasks/<task_id>/delete", methods=["POST"])
+    @app.route("/dev/tasks/<task_id>/delete", methods=["POST"])
     def delete_task(task_id):
         db.devTasks.delete_one({"_id": ObjectId(task_id)})
         return redirect(url_for("dev_tasks"))

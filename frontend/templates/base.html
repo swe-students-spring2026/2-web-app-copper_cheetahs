@@ -1,15 +1,17 @@
 {% extends 'template.html' %} 
 
-  {% block navbar %}
-  <nav>
-    <a><i class="fa-solid fa-bars"></i></a>
-    <a href="{{ url_for('home')}}">Taskboard</a>
-    <!-- placeholder for project name -->
-    <a href="#filtering-popup"><i class="fa-solid fa-filter"></i></a>
-  </nav>
-  {% endblock %}
+{% block stylesheets %} {% endblock %}
 
-  {% block container %} {% endblock %}
+{% block navbar %}
+<nav>
+  <a><i class="fa-solid fa-bars"></i></a>
+  <a href="{{ url_for('home')}}">Taskboard</a>
+  <!-- placeholder for project name -->
+  <a href="#filtering-popup"><i class="fa-solid fa-filter"></i></a>
+</nav>
+{% endblock %}
+
+{% block container %} {% endblock %}
 
 
 <!--

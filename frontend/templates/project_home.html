@@ -1,0 +1,28 @@
+{% extends 'base.html' %} 
+
+{% block stylesheets %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/project_home.css') }}"
+/>
+{% endblock %} 
+
+{% block container %} 
+<div class="projectContainer">
+    {% for proj in project_list %}
+    <div class="project">
+        <p>{{ proj.name }}</p>
+    </div>
+    
+    {% endfor %}
+</div>  
+
+<div class="fab">
+    <a class="fa-solid fa-plus" href="{{ url_for('add_project') }}"></a>
+</div>
+
+{% endblock %}
+
+<!--
+python backend/app.py
+-->
