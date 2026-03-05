@@ -47,7 +47,16 @@ def create_app():
         Returns:
             rendered template (str): The rendered HTML template.
         """
-
+        if "username" in session:
+            if session.get('role') == 'dev':
+                return redirect(url_for("dev_projects"))
+            if session.get('role') == 'stk':
+                return redirect(url_for("stk_projects"))
+            
+            
+    @app.route("/logout")
+    def logout():
+        session.clear()
         return redirect(url_for("role_screen"))
     
     @app.route("/role")
@@ -332,7 +341,7 @@ def create_app():
 
         if assigned:
             if assigned == "None":
-                filters["assigned"] = None
+                filters["assigned"] = {"$size": 0}
             else:
                 filters["assigned"] = assigned
 
@@ -375,7 +384,8 @@ def create_app():
     # add-task
     @app.route("/dev/<project_id>/add-task")
     def add_task(project_id):
-        return render_template("add_task.html", project_id=project_id)
+        project = db.projects.find_one({"projectID": project_id})
+        return render_template("add_task.html", project_id=project_id, project=project)
     
     @app.route("/dev/<project_id>/add-task",  methods=["POST"])
     def add_task_post(project_id):
@@ -397,9 +407,11 @@ def create_app():
     @app.route("/dev/<project_id>/edit-task/<task_id>")
     def edit_task(project_id, task_id):
         task = db.devTasks.find_one({"_id": ObjectId(task_id)})
+        project = db.projects.find_one({"projectID": project_id})
         if not task:
             return "Task not found", 404
-        return render_template("edit_task.html", task=task, project_id=project_id)
+        
+        return render_template("edit_task.html", task=task, project_id=project_id, project=project)
     
     @app.route("/dev/<project_id>/edit-task/<task_id>/edit", methods=["POST"])
     def edit_task_post(project_id, task_id):

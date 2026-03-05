@@ -10,8 +10,15 @@
     </summary>
     
     <div class="dropdown">
-      <a href="{{ url_for('redirect_to_project')}}">Projects</a>
-      <a href="{{ url_for('home')}}">Logout</a>
+      <a href="{{ url_for('home') }}">Projects</a>
+
+      {% if session.get("role") == "dev" %}
+        <a href="{{ url_for('join_project')}}">Join a Project</a>
+      {% endif %}
+      
+
+      <a href="{{ url_for('logout')}}">Logout</a>
+      
     </div>
   </details>
   <a href="{{ url_for('home')}}">Taskboard</a>

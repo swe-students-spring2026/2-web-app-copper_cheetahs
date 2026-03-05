@@ -46,9 +46,18 @@
     <div>
         <label for="assigned">Assigned</label>
         <select id="assigned" name="assigned" multiple>
-            <option value="Developer 1" {% if task.assigned and 'Developer 1' in task.assigned %}selected{% endif %}>Developer 1</option>
-            <option value="Developer 2" {% if task.assigned and 'Developer 2' in task.assigned %}selected{% endif %}>Developer 2</option>
-            <option value="Developer 3" {% if task.assigned and 'Developer 3' in task.assigned %}selected{% endif %}>Developer 3</option>
+
+          {% if project.assigned_devs %}
+            {% for dev in project.assigned_devs %}
+              <option value="{{ dev }}" {% if task and task.assigned and dev in task.assigned %} selected {% endif %}>
+                {{ dev }}
+              </option>
+            {% endfor %}
+
+          {% else %}
+            <option value="" disabled>No developers have joined this project yet</option>
+          {% endif %}
+          
         </select>
     </div>
 
