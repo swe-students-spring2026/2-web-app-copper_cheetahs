@@ -2,29 +2,29 @@
   box-sizing: border-box;
 }
 
-.edit-box, .add-box {
+.edit-box, .add-box, .add-project {
   width: 100%;
   margin: 16px 0;
   padding: 16px;
 }
 
-.edit-box h1, .add-box h1 {
+.edit-box h1, .add-box h1, .add-project h1 {
   margin: 0 0 16px;
   text-align: center;
 }
 
-.edit-box form, .add-box form{
+.edit-box form, .add-box form, .add-project form {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.edit-box form > div, .add-box form > div {
+.edit-box form > div, .add-box form > div, .add-project form > div {
   display: flex;
   flex-direction: column;
 }
 
-.edit-box label, .add-box label {
+.edit-box label, .add-box label, .add-project label {
   margin-bottom: 4px;
 }
 
@@ -35,17 +35,20 @@
 .add-box input,
 .add-box textarea,
 .add-box select,
-.add-box button {
+.add-box button,
+.add-project input,
+.add-project textarea,
+.add-project button  {
   width: 100%;
   font: inherit;
   padding: 10px;
 }
 
-.edit-box textarea, .add-box textarea{
+.edit-box textarea, .add-box textarea, .add-project textarea{
   min-height: 90px;
   resize: vertical;
 }
 
-.edit-box button, .add-box button {
+.edit-box button, .add-box button .add-project button {
   margin-top: 4px;
 }
