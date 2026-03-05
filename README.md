@@ -12,7 +12,27 @@ See user stories [here](https://github.com/swe-students-spring2026/2-web-app-cop
 
 ## Steps necessary to run the software
 
-See instructions. Delete this line and place instructions to download, configure, and run the software here.
+### Run with Docker
+
+#### 1 Configure environment variables
+
+- Create a `.env` file in the project root (same folder as
+`docker-compose.yml`).
+
+- Copy the contents under 'optional docker' from the example file.
+
+#### 2 Start services
+
+- Type `docker compose up --build` in terminal.
+
+#### 3 Open the app
+
+- Go to: http://localhost:5001
+- (`docker-compose.yml` maps host port **5001** to container port **5000**.)
+
+#### 4 Stop services
+
+- Use ctrl c to stop services.
 
 ## Task boards
 
