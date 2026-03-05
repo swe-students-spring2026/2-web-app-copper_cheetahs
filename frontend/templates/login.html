@@ -12,7 +12,7 @@
 <!-- add path to action -->
 <form id="login" method="POST">
   <div>
-    <label for="username">Enter Username:</label>
+    <label for="username">Enter Username</label>
     <input type="text" class="username" name="username" />
   </div>
 
@@ -21,8 +21,9 @@
     <input type="text" class="password" name="password" />
   </div>
 
-  <button type="submit" class="submit">Login</button>
-
-  <a href="{{ url_for('register') }}">Register here</a>
+  <div>
+    <button type="submit" class="submit">Login</button>
+    <a href="{{ url_for('register') }}">Register here</a>
+  </div>
 </form>
 {% endblock %}
