@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block container %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/shareandjoin.css') }}" />
+{% endblock %}
+
+<div class="invite">
+    <h1>Join a Project</h1>
+    <p>Enter a Project Id to join.</p>
+
+    <form method="POST">
+        <div class="invite-link">
+            <label>Project Id:</label>
+            <input type="text" name="project_id" value="{{ prefilled_id }}"/>
+        </div>
+        <button type="submit" class="submit">Join Project</button>
+    </form>
+    <a href="{{ url_for('dev_projects') }}">Cancel</a>
+</div>
+{% endblock %}

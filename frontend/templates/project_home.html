@@ -19,7 +19,11 @@
 </div>
 
 <div class="fab">
-  <a class="fa-solid fa-plus" href="{{ url_for('add_project') }}"></a>
+  {% if session.get("role") == "stk" %}
+    <a class="fa-solid fa-plus" href="{{ url_for('add_project') }}"></a>
+  {% else %}
+    <a class="fa-solid fa-plus" href="{{ url_for('join_project') }}"></a>
+  {% endif %}
 </div>
 
 {% endblock %}

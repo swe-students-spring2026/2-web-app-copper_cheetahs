@@ -54,6 +54,29 @@ def create_app():
     def role_screen():
         # choose dev or stakeholder
         return render_template("role.html")
+    
+
+    @app.route("/register", methods=['GET', 'POST'])
+    def register():
+        if request.method == 'POST':
+            #creates simple user and password. not encrypted or anything.
+            username = request.form.get('username')
+            password = request.form.get('password')
+            role = request.form.get('role')
+
+            if db.users.find_one({"username": username}):
+                return "User already exists", 400
+            
+            db.users.insert_one({
+                "username": username,
+                "password": password,
+                "role": role
+            })
+
+            return redirect(url_for("role_screen"))
+    
+        return render_template("register.html")
+                        
 
     @app.route("/dev/login", methods = ['POST', 'GET'])
     def dev_login():
@@ -62,13 +85,20 @@ def create_app():
         if(request.method == 'POST'):
             username = request.form.get('username')
             password = request.form.get('password')
-            
-            if username:
-                session['username'] = username
 
-            return redirect(url_for("dev_projects"))
-        
+            # now checks if user is a developer.
             
+            user = db.users.find_one({
+                "username": username, 
+                "password": password,
+                "role": "dev"
+            })
+            if user:
+                session['username'] = username
+                session['role'] = "dev"
+                return redirect(url_for("dev_projects"))
+            else:
+                return "Invalid credentials", 401
 
         return render_template("login.html")
     
@@ -79,9 +109,20 @@ def create_app():
         if(request.method == 'POST'):
             username = request.form.get('username')
             password = request.form.get('password')
-            if username:
+            role = request.form.get('role')
+
+            user = db.users.find_one({
+                "username": username, 
+                "password": password,
+                "role": "stk"
+            })
+
+            if user:
                 session['username'] = username
-            return redirect(url_for("stk_projects"))
+                session['role'] = "stk"
+                return redirect(url_for("stk_projects"))
+            else:
+                return "Invalid Dev credentials", 401
 
         return render_template("login.html")
     
@@ -117,6 +158,48 @@ def create_app():
         return render_template("add_project.html")
     
     ## START OF CHANGING STUFF TO STK
+
+    #join project logic
+
+    @app.route("/dev/join", methods=['GET', 'POST'])
+    def join_project():
+        if request.method == 'POST':
+            project_id = request.form.get('project_id')
+            username = session.get('username')
+
+            if not username:
+                return redirect(url_for("dev_login"))
+             
+            project = db.projects.find_one({"projectID": project_id})
+
+
+            if not project:
+                return "ProjectID not found", 404
+            
+            if username in project.get('assigned_devs', []):
+                return "Already assigned to the project", 400
+            
+            db.projects.update_one(
+                {"projectID": project_id},
+                {"$push": {"assigned_devs": username}}
+            )
+
+            return redirect(url_for("dev_projects"))
+        
+        return render_template("join_project.html", prefilled_id=request.args.get('id', ''))
+            
+    # share project logic
+
+    @app.route("/stk/projects/<project_id>/share", methods=["GET"])
+    def share_project(project_id):
+        project = db.projects.find_one({"projectID": project_id})
+        if not project:
+            return "Project not found", 404
+        
+        # external gives the full link
+        invite_link = url_for('join_project', id=project_id, _external=True)
+
+        return render_template("share_project.html", project=project, invite_link=invite_link)
 
     # edit-project
     @app.route("/stk/projects/edit/<project_id>")
@@ -165,7 +248,15 @@ def create_app():
     @app.route("/dev/projects", methods = ['GET'])
     def dev_projects():
         # dev project list
-        project_list = list(db.projects.find({}))
+
+        username = session.get('username')
+
+        if not username:
+            return redirect(url_for("dev_login"))
+        
+        #simple check to see if the user is assgined to the project.
+
+        project_list = list(db.projects.find({"assigned_devs": username}))
 
         return render_template(
             "project_home.html",

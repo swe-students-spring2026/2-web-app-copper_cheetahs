@@ -24,6 +24,10 @@
         <a href="{{ url_for('dev_tasks', project_id=proj.projectID) }}">
           <i class="fa-solid fa-circle-info info"></i>
         </a>
+        <a href="{{ url_for('share_project', project_id=proj.projectID) }}">
+          <i class="fa-solid fa-link share"></i>
+        </a>
+        
       </div>
       <p><b>Description: </b>{{ proj.description }}</p>
     </div>
