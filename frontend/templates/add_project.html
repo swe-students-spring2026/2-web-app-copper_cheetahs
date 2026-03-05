@@ -4,24 +4,26 @@
   href="{{ url_for('static', filename='css/task_info.css') }}"
 />
 {% endblock %} {% block container %}
-<h1>Create Project</h1>
+<div class = "add-project">
+  <h1>Create Project</h1>
 
-<form method="POST" action="#">
-  <div>
-    <label for="title">Title</label>
-    <input id="title" name="title" type="text" required/>
-  </div>
+  <form method="POST" action="#">
+    <div>
+      <label for="title">Title</label>
+      <input id="title" name="title" type="text" required/>
+    </div>
 
-  <div>
-    <label for="description">Description</label>
-    <textarea id="description" name="description"></textarea>
-  </div>
+    <div>
+      <label for="description">Description</label>
+      <textarea id="description" name="description"></textarea>
+    </div>
 
-  <div>
-    <label for="assigned">Invite (Seperate emails with a ,)</label>
-    <input type="text" id="assigned" name="assigned" placeholder="Enter email..."> 
-  </div>
+    <div>
+      <label for="assigned">Invite (Seperate emails with a ,)</label>
+      <input type="text" id="assigned" name="assigned" placeholder="Enter email..."> 
+    </div>
 
-  <button type="submit">Submit</button>
-</form>
+    <button type="submit">Submit</button>
+  </form>
+</div>
 {% endblock %}

@@ -4,7 +4,16 @@
 
 {% block navbar %}
 <nav>
-  <a><i class="fa-solid fa-bars"></i></a>
+  <details class="hamburger">
+    <summary>
+      <i class="fa-solid fa-bars"></i>
+    </summary>
+    
+    <div class="dropdown">
+      <a href="{{ url_for('redirect_to_project')}}">Projects</a>
+      <a href="{{ url_for('home')}}">Logout</a>
+    </div>
+  </details>
   <a href="{{ url_for('home')}}">Taskboard</a>
   <!-- placeholder for project name -->
   <a href="#filtering-popup"><i class="fa-solid fa-filter"></i></a>

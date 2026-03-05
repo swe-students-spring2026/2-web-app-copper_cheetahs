@@ -2,7 +2,19 @@
     display: flex;
     flex-direction: column;
     gap: 1em; 
-    margin: 1em;
+
+    margin: 2em;
+
+    height: 80%;
+
+    font-size:1.2em;
+}
+
+.invite-link form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
 }
 
 .invite-link input {
@@ -16,4 +28,25 @@
     display: flex;
     flex-direction: column;
     gap: 1em; 
+}
+
+.invite a{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+
+    position:absolute;
+    bottom:2em;
+    left:2em;
+
+    text-decoration:none;
+
+    padding:1em;
+    height:fit-content;
+    width:fit-content;
+
+    background-color: rgb(229, 150, 150);
+    border:2px solid black;
+    border-radius: 10%;
+    color: black;
 }
