@@ -44,9 +44,16 @@
     <div>
       <label for="assigned">Assigned</label>
       <select id="assigned" name="assigned" multiple>
-        <option>Developer 1</option>
-        <option>Developer 2</option>
-        <option>Developer 3</option>
+        {% if project.assigned_devs %}
+            {% for dev in project.assigned_devs %}
+              <option value="{{ dev }}" {% if task and task.assigned and dev in task.assigned %} selected {% endif %}>
+                {{ dev }}
+              </option>
+            {% endfor %}
+
+          {% else %}
+            <option value="" disabled>No developers have joined this project yet</option>
+          {% endif %}
       </select>
     </div>
 
