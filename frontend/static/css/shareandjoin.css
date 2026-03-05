@@ -1,0 +1,19 @@
+.invite{
+    display: flex;
+    flex-direction: column;
+    gap: 1em; 
+    margin: 1em;
+}
+
+.invite-link input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    box-sizing: border-box;
+}
+
+.team-list{
+    display: flex;
+    flex-direction: column;
+    gap: 1em; 
+}

@@ -1,0 +1,35 @@
+{% extends 'template.html' %} 
+
+{% block stylesheets %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/login.css') }}"
+/>
+{% endblock %} 
+
+{% block container %}
+<h1>Register</h1>
+
+<form method="POST" action="{{ url_for('register') }}">
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" required placeholder="Choose a username" />
+    </div>
+
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" required placeholder="Choose a password" />
+    </div>
+
+    <div>
+        <label for="role">Account Type:</label>
+        <select name="role" id="role" required>
+            <option value="dev">Developer</option>
+            <option value="stk">Stakeholder</option>
+        </select>
+    </div>
+
+    <button type="submit" class="submit">Register</button>
+    <a href="{{ url_for('role_screen') }}">Back to Login</a>
+</form>
+{% endblock %}

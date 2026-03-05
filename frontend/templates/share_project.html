@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block container %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/shareandjoin.css') }}"
+/>
+<div class="invite">
+    <text>Invite Developers to <b>{{ project.name }}</b> </text>
+
+    <div class="invite-link">
+        <label>Invite Link:</label>
+        <input type="text" value="{{ invite_link }}" readonly/>
+    </div>
+
+    <div class="invite-link">
+        <label>Project Id Code:</label>
+        <input type="text" value="{{ project.projectID }}" readonly/>
+    </div>
+
+    <h2>Current Developers in Project: </h2>
+    {% if project.assigned_devs %}
+        {% for dev in project.assigned_devs %}
+            <div class="team-list">
+                <text>{{ dev }}</text>
+            </div>
+        {% endfor %}
+    {% else %}
+        <text>No Developer Assigned to the Project</text>
+    {% endif %} 
+
+    <a href="{{ url_for('stk_projects') }}">Back to Dashboard</a>
+</div>
+
+{% endblock %}
