@@ -101,6 +101,8 @@ def create_app():
                 return "Invalid credentials", 401
 
         return render_template("login.html")
+
+    
     
     @app.route("/stk/login", methods = ['POST', 'GET'])
     def stk_login():
@@ -126,6 +128,17 @@ def create_app():
 
         return render_template("login.html")
     
+    @app.route("/redirect/login", methods = ['GET'])
+    def redirect_to_project():
+        if( session.get('role') == "stk"): 
+            return redirect(url_for("stk_projects"))
+        
+        elif(session.get('role') == "dev"):
+            return redirect(url_for("dev_projects"))
+        
+        else:
+            return redirect(url_for("home")) 
+
     @app.route("/stk/projects", methods = ['GET'])
     def stk_projects():
         project_list = list(db.projects.find({}))

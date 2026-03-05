@@ -24,6 +24,8 @@ nav {
   align-items: center;
   justify-content: space-between;
 
+  position: relative;
+
   padding: 0 1em;
   height: 10%;
 
@@ -33,6 +35,35 @@ nav {
 
   background-color: white;
   border-bottom: 2px solid rgb(209, 208, 208);
+}
+
+nav .hamburger {
+  cursor: pointer;
+}
+
+nav .hamburger summary {
+  list-style: none;
+  transition: 0.4s;
+}
+
+nav .dropdown {
+  display:flex;
+  flex-direction:column;
+  gap:1em;
+  
+  position: absolute;
+  top: 100%;
+  left: 0;
+  
+  width: fit-content;
+  height: auto;
+
+  padding:1em;
+
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 nav a {
