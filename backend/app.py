@@ -52,6 +52,7 @@ def create_app():
                 return redirect(url_for("dev_projects"))
             if session.get('role') == 'stk':
                 return redirect(url_for("stk_projects"))
+        return redirect(url_for("role_screen"))
             
             
     @app.route("/logout")
